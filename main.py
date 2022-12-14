@@ -52,7 +52,6 @@ async def up_db():
                 channels += len(guild.text_channels) + len(guild.voice_channels) + len(guild.stage_channels)
                 cur.execute(f'UPDATE stats_bot SET guilds = {int(len(guilds))}, users = {int(users)}, channels = {int(channels)}, commands = {StBcommands}')
         data.commit()
-        print('Update databes - Work')
         await asyncio.sleep(60)
     
 
