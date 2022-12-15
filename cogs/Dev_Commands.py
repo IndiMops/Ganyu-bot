@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import discord
-import discord
 from discord.ext import commands, tasks
 from discord.ui import Select, View, Button
+from discord import ui
 from discord import app_commands
 import config
 from config import settings
@@ -252,7 +252,6 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
                 color=0xff0000
             )
             await ctx.reply(embed=embed)
-    
     
 async def setup(bot):
     await bot.add_cog(Test_Commands(bot))

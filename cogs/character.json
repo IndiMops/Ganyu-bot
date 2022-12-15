@@ -1,0 +1,149 @@
+{
+    "anemo_traveler": {
+        "name": "Мандрівник",
+        "avatar": "https://media.discordapp.net/attachments/939569454390603837/1052702465046360144/avatar.png",
+        "element": "Анемо",
+        "color": "0x90dfbd",
+        "voice_artist": {
+            "en": "Зак Агілар та Сара Міллер-Крюс",
+            "chs": "Лу Їнь та Янь Нін",
+            "jp": "Шун Хорі та Юкі Аой",
+            "kr": "Лі Кйон Тхе та Лі Са Ах"
+        },
+        "birthday": "Невідомо",
+        "const": "Зоряний Мандрівник",
+        "description": "Мандрівник з іншого світу, розлучений зі своєю сестрою/братом. Він вирушає в довгу подорож, щоб знайти всіх сімох архонтів і повернути рідну людину.",
+        "stats": {
+            "lvl_20": {
+                "base_HP": 2342,
+                "base_ATK": 46,
+                "base_DEF": 147,
+                "ATK": "0%",
+                "update_item": "Не потрібні матеріали"
+            },
+            "lvl40": {
+                "base_HP": 2342,
+                "base_ATK": 46,
+                "base_DEF": 147,
+                "ATK": "0%",
+                "update_item": {
+                    "local_specialty": {
+                        "name": "Вітряна хризантема",
+                        "count": 3
+                    },
+                    "stone": {
+                        "name": "Крихти блискучого діаманту",
+                        "count": 1
+                    },
+                    "mob_loot": {
+                        "name": "Пошкоджена маска",
+                        "count": 3
+                    }
+                }
+            },
+            "lvl50": {
+                "base_HP": 5766,
+                "base_ATK": 113,
+                "base_DEF": 362,
+                "ATK": "6.0%",
+                "update_item": {
+                    "local_specialty": {
+                        "name": "Вітряна хризантема",
+                        "count": 10
+                    },
+                    "stone": {
+                        "name": "Уламок блискучого діаманту",
+                        "count": 3
+                    },
+                    "mob_loot": {
+                        "name": "Пошкоджена маска",
+                        "count": 15
+                    }
+                }
+            },
+            "lvl60": {
+                "base_HP": 7164,
+                "base_ATK": 140,
+                "base_DEF": 450,
+                "ATK": "12.0%",
+                "update_item": {
+                    "local_specialty": {
+                        "name": "Вітряна хризантема",
+                        "count": 20
+                    },
+                    "stone": {
+                        "name": "Уламок блискучого діаманту",
+                        "count": 6
+                    },
+                    "mob_loot": {
+                        "name": "Брудна маска",
+                        "count": 12
+                    }
+                }
+            },
+            "lvl70": {
+                "base_HP": 8401,
+                "base_ATK": 164,
+                "base_DEF": 527,
+                "ATK": "12.0%",
+                "update_item": {
+                    "local_specialty": {
+                        "name": "Вітряна хризантема",
+                        "count": 30
+                    },
+                    "stone": {
+                        "name": "Шмат блискучого діаманту",
+                        "count": 3
+                    },
+                    "mob_loot": {
+                        "name": "Брудна маска",
+                        "count": 18
+                    }
+                }
+            },
+            "lvl80": {
+                "base_HP": 9638,
+                "base_ATK": 188,
+                "base_DEF": 605,
+                "ATK": "18.0%",
+                "update_item": {
+                    "local_specialty": {
+                        "name": "Вітряна хризантема",
+                        "count": 45
+                    },
+                    "stone": {
+                        "name": "Шмат блискучого діаманту",
+                        "count": 6
+                    },
+                    "mob_loot": {
+                        "name": "Зловісна маска",
+                        "count": 12
+                    }
+                }
+            },
+            "lvl90": {
+                "base_HP": 10875,
+                "base_ATK": 212,
+                "base_DEF": 683,
+                "ATK": "42.0%",
+                "update_item": {
+                    "local_specialty": {
+                        "name": "Вітряна хризантема",
+                        "count": 60
+                    },
+                    "stone": {
+                        "name": "Камінь блискучого діаманту",
+                        "count": 6
+                    },
+                    "mob_loot": {
+                        "name": "Зловісна маска",
+                        "count": 24
+                    }
+                }
+            }
+        }
+    },
+    "sucrose": {
+
+    }
+}
