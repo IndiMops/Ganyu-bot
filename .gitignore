@@ -4,3 +4,8 @@ discord.log
 data.sqlite
 __pycache__/
 */__pycache__/
+rps.py
+BotLog.txt
+config.py
+data.sqlite
+.gitignore

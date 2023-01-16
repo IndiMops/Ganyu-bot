@@ -62,9 +62,17 @@ class Character(commands.Cog):
             async def no_character(interaction: discord.Integration):
                 if menu.values[0] == '1':
                     embed = discord.Embed(
-                        title='Стихіія Анемо'
+                        title='Стихіія Анемо',
+                        description='Анемо — один із семи елементів і перший, який може використовувати Мандрівник. Архонт, з яким асоціюється — Барбатос, володіннями якого є Мондштадт.',
+                        color=0x90dfbd
                     )
-                    
+
+                    embed.set_image(
+                        url='https://media.discordapp.net/attachments/939569454390603837/1053091519017517066/dvalin_and_venti_by_skyvixie_defnr9r-fullview.jpg'
+                    )
+                    embed.set_thumbnail(
+                        url='https://media.discordapp.net/attachments/939569454390603837/1053095902576906270/anemo.png'
+                    )
                     anemo_menu = Select(
                         placeholder='Виберіть персонажа...',
                         options=[
@@ -77,62 +85,123 @@ class Character(commands.Cog):
                                 label='Цукроза',
                                 value='2',
                                 emoji='<:sucrose:1052662935845085214>'
+                            ),
+                            discord.SelectOption(
+                                label='Венті',
+                                value='3',
+                                emoji='<:avatar_Venti:1053099898377089116>'
+                            ),
+                            discord.SelectOption(
+                                label='Джин',
+                                value='4',
+                                emoji='<:avavtar_jean:1053099797558607964>'
+                            ),
+                            discord.SelectOption(
+                                label='Сяо',
+                                value='5',
+                                emoji='<:avatar_Xiao:1053099915254968340>'
+                            ),
+                            discord.SelectOption(
+                                label='Каедехара Кадзуха',
+                                value='6',
+                                emoji='<:avatar_Kazuha:1053099819708731454>'
+                            ),
+                            discord.SelectOption(
+                                label='Саю',
+                                value='7',
+                                emoji='<:avatar_Sayu:1053099844098609273>'
+                            ),
+                            discord.SelectOption(
+                                label='Шіканоін Хейдзо',
+                                value='8',
+                                emoji='<:avatar_Heizo:1053099777484660756>'
+                            ),
+                            discord.SelectOption(
+                                label='Фарузан',
+                                value='9',
+                                emoji='<:avatar_Faruzan:1053099756047568947>'
+                            ),
+                            discord.SelectOption(
+                                label='Блукач',
+                                value='10',
+                                emoji='<:avarar_Wanderer:1053099877372010596>'
                             )
                         ]
                     )
-                     # paginatio
-                    first_page = Button(
-                        emoji='⬅️',
-                        style=discord.ButtonStyle.blurple,
-                        disabled=True
-                    )
-                    pervision_page = Button(
-                        emoji='⏮️',
-                        style=discord.ButtonStyle.green,
-                        disabled=True
-                    )
-                    next_page = Button(
-                        emoji='⏭️',
-                        style=discord.ButtonStyle.green
-                    )
-                    last_page = Button(
-                        emoji='➡️',
-                        style=discord.ButtonStyle.blurple
-                    )
                     
                     async def anemo(interaction: discord.Integration):
-                        if anemo_menu.values[0] == '1':
-                            path = './cogs/character.json'
-                            with open(path, encoding='utf-8') as f:
-                                data = json.load(f)
+                        path = './cogs/character.json'
+                        with open(path, encoding='utf-8') as f:
+                            data = json.load(f)
                             
+                        if anemo_menu.values[0] == '1':
+                            traveler = data['anemo_traveler']
                             embed = discord.Embed(
-                                title=data['anemo_traveler']['name'],
-                                description=f'*"{data["anemo_traveler"]["description"]}"*',
-                                color=data['anemo_traveler']['color']
+                                title=traveler['name'],
+                                description=f'*"{traveler["description"]}"*',
+                                color=0x90dfbd
                             )
                             embed.set_author(
                                 name='Основна інформація'
                             )
                             embed.add_field(
                                 name='Стихія',
-                                value=data['anemo_traveler']['element'],
-                                inline=False
+                                value=traveler['element']
                             )
                             embed.add_field(
                                 name='Сузір\'я',
-                                value=data['anemo_traveler']['element'],
+                                value=traveler['const']
+                            )
+                            embed.add_field(
+                                name='⠀',
+                                value='⠀'
+                            )
+                            embed.add_field(
+                                name='День народження',
+                                value='Встановлю гравець'
+                            )
+                            embed.add_field(
+                                name='Група',
+                                value='Змінюється по ходу сюжету'
+                            )
+                            embed.add_field(
+                                name='⠀',
+                                value='⠀'
+                            )
+                            embed.add_field(
+                                name='Актори озвучування',
+                                value='⠀',
                                 inline=False
                             )
+                            embed.add_field(
+                                name='EN',
+                                value=traveler['voice_artist']['en']
+                            )
+                            embed.add_field(
+                                name='CN',
+                                value=traveler['voice_artist']['chn']
+                            )
+                            embed.add_field(
+                                name='JP',
+                                value=traveler['voice_artist']['jp']
+                            )
+                            embed.add_field(
+                                name='KR',
+                                value=traveler['voice_artist']['kr']
+                            )                            
+                            
                             embed.set_thumbnail(
-                                url=data['anemo_traveler']['avatar']
+                                url=traveler['avatar']
+                            ) 
+                            embed.set_image(
+                                url=traveler['card']
                             )
                             
                             anemo_traveler_menu = Select(
                                 placeholder='Виберіть вкладку...',
                                 options=[
                                     discord.SelectOption(
-                                        label='Основне',
+                                        label='Рівні та ресурси',
                                         value='1'
                                     ),
                                     discord.SelectOption(
@@ -146,15 +215,96 @@ class Character(commands.Cog):
                                     discord.SelectOption(
                                         label='Історія',
                                         value='4'
-                                    ),
-                                    discord.SelectOption(
-                                        label='Інше',
-                                        value='5'
                                     )
                                 ]
                             )
+                            
                             async def character_info(interaction: discord.Interaction):
-                                pass
+                                if anemo_traveler_menu.values[0] == '1':
+                                    embed = discord.Embed(
+                                        title='Рівні та ресурси',
+                                        description='Виберіть із списку потрібний вам рівень і ви отримаєте базові характеристики персонажа та ресурси для прокачування на це рівень',
+                                        color=0x90dfbd
+                                    )
+                                    
+                                    embed.set_thumbnail(
+                                        url=traveler['avatar']
+                                    ) 
+                                    embed.set_image(
+                                        url='https://media.discordapp.net/attachments/939569454390603837/1054054555995881544/banners2.png'
+                                    )
+                                    
+                                    
+                                    anemo_traveler_resource_menu = Select(
+                                        placeholder='Виберіть рівень...',
+                                        options=[
+                                            discord.SelectOption(
+                                                label='20 рівень',
+                                                value='1'
+                                            ),
+                                            discord.SelectOption(
+                                                label='40 рівень',
+                                                value='2'
+                                            ),
+                                            discord.SelectOption(
+                                                label='50 рівень',
+                                                value='3'
+                                            ),
+                                            discord.SelectOption(
+                                                label='60 рівень',
+                                                value='4'
+                                            ),
+                                            discord.SelectOption(
+                                                label='70 рівень',
+                                                value='5'
+                                            ),
+                                            discord.SelectOption(
+                                                label='80 рівень',
+                                                value='6'
+                                            ),
+                                            discord.SelectOption(
+                                                label='90 рівень',
+                                                value='7'
+                                            )
+                                        ]
+                                    )
+                                    
+                                    async def character_level(interaction: discord.Interaction):
+                                        stats = traveler['stats']
+                                        if anemo_traveler_resource_menu.values[0] == '1':
+                                            embed = discord.Embed(
+                                                title='Рівні та ресурси',
+                                                color=0x90dfbd
+                                            )
+                                            print(anemo_traveler_resource_menu.values)
+                                            embed.set_author(
+                                                name=traveler['name']
+                                            )
+
+                                            embed.add_field(
+                                                name='Базові характеристики',
+                                                value=f'**Базове здоров\'я:** {stats["lvl_20"]["base_HP"]}\n**Базова шкода:** {stats["lvl_20"]["base_ATK"]}\n**Базовий захист:** {stats["lvl_20"]["base_DEF"]}\n**Шкода:** {stats["lvl_20"]["ATK"]}',
+                                                inline=False
+                                            )
+                                            embed.add_field(
+                                                name='Ресурси для покращення',
+                                                value=stats['lvl_20']['update_item']
+                                            )
+                                            
+                                            embed.set_thumbnail(
+                                                url=traveler['avatar']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1054064966996598824/banners3.png'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                    
+                                    anemo_traveler_resource_menu.callback = character_level
+                                    anemo_traveler_resurse_view = View()
+                                    anemo_traveler_resurse_view.add_item(anemo_traveler_resource_menu)
+                                    
+                                    await interaction.response.edit_message(embed=embed, view=anemo_traveler_resurse_view)
                             
                             anemo_traveler_menu.callback = character_info
                             anemo_traveler_view = View()
@@ -166,10 +316,6 @@ class Character(commands.Cog):
                     anemo_menu.callback = anemo
                     anemo_view = View()
                     anemo_view.add_item(anemo_menu)
-                    anemo_view.add_item(first_page)
-                    anemo_view.add_item(pervision_page)
-                    anemo_view.add_item(next_page)
-                    anemo_view.add_item(last_page)
                     
                     await interaction.response.edit_message(embed=embed, view=anemo_view)
             
@@ -194,8 +340,7 @@ class Character(commands.Cog):
                 url='https://media.discordapp.net/attachments/939569454390603837/1052884455355850752/chapter.png'
             )
             
-            await interaction.response.defer(thinking=True)
-            await interaction.followup.send(embed=embed, view=view, ephemeral=True)
+            await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
     
     
 async def setup(bot):

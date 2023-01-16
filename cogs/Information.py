@@ -21,7 +21,7 @@ class Information(commands.Cog):
         )
         self.bot.tree.add_command(self.user_info)    
         
-    
+
     @commands.Cog.listener()
     async def on_ready(self):
         print('Information commands - Ready!')
