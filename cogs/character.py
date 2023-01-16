@@ -150,7 +150,7 @@ class Character(commands.Cog):
                             )
                             embed.add_field(
                                 name='Сузір\'я',
-                                value=traveler['const']
+                                value=traveler['const']['name']
                             )
                             embed.add_field(
                                 name='⠀',
@@ -271,6 +271,36 @@ class Character(commands.Cog):
                                     
                                     async def character_level(interaction: discord.Interaction):
                                         stats = traveler['stats']
+                                        if anemo_traveler_resource_menu.values[0] == '2':
+                                            embed = discord.Embed(
+                                                title='Рівні та ресурси',
+                                                color=0x90dfbd
+                                            )
+                                            #print(anemo_traveler_resource_menu.values)
+                                            embed.set_author(
+                                                name=traveler['name']
+                                            )
+
+                                            embed.add_field(
+                                                name='Базові характеристики',
+                                                value=f'**Базове здоров\'я:** {stats["lvl_40"]["base_HP"]}\n**Базова шкода:** {stats["lvl_40"]["base_ATK"]}\n**Базовий захист:** {stats["lvl_40"]["base_DEF"]}\n**Шкода:** {stats["lvl_40"]["ATK"]}',
+                                                inline=False
+                                            )
+                                            update_item = stats['lvl_40']['update_item']
+                                            embed.add_field(
+                                                name='Ресурси для покращення',
+                                                value=f'**Місцеві диковини:**\n{update_item["local_specialty"]["name"]} - {update_item["local_specialty"]["count"]}\n\n**Камінь:**\n{update_item["stone"]["name"]} - {update_item["stone"]["count"]}\n\n**Ресурси із мобів:**\n{update_item["mob_loot"]["name"]} - {update_item["mob_loot"]["count"]}'
+                                            )
+                                            
+                                            embed.set_thumbnail(
+                                                url=traveler['avatar']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1054064966996598824/banners3.png'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        
                                         if anemo_traveler_resource_menu.values[0] == '1':
                                             embed = discord.Embed(
                                                 title='Рівні та ресурси',
@@ -299,13 +329,307 @@ class Character(commands.Cog):
                                             )
                                             
                                             await interaction.response.edit_message(embed=embed)
-                                    
+
+                                        if anemo_traveler_resource_menu.values[0] == '3':
+                                            embed = discord.Embed(
+                                                title='Рівні та ресурси',
+                                                color=0x90dfbd
+                                            )
+                                            print(anemo_traveler_resource_menu.values)
+                                            embed.set_author(
+                                                name=traveler['name']
+                                            )
+
+                                            embed.add_field(
+                                                name='Базові характеристики',
+                                                value=f'**Базове здоров\'я:** {stats["lvl_50"]["base_HP"]}\n**Базова шкода:** {stats["lvl_50"]["base_ATK"]}\n**Базовий захист:** {stats["lvl_50"]["base_DEF"]}\n**Шкода:** {stats["lvl_50"]["ATK"]}',
+                                                inline=False
+                                            )
+                                            update_item = stats['lvl_50']['update_item']
+                                            embed.add_field(
+                                                name='Ресурси для покращення',
+                                                value=f'**Місцеві диковини:**\n{update_item["local_specialty"]["name"]} - {update_item["local_specialty"]["count"]}\n\n**Камінь:**\n{update_item["stone"]["name"]} - {update_item["stone"]["count"]}\n\n**Ресурси із мобів:**\n{update_item["mob_loot"]["name"]} - {update_item["mob_loot"]["count"]}'
+                                            )
+                                            
+                                            embed.set_thumbnail(
+                                                url=traveler['avatar']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1054064966996598824/banners3.png'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                            
+                                        if anemo_traveler_resource_menu.values[0] == '4':
+                                            embed = discord.Embed(
+                                                title='Рівні та ресурси',
+                                                color=0x90dfbd
+                                            )
+                                            print(anemo_traveler_resource_menu.values)
+                                            embed.set_author(
+                                                name=traveler['name']
+                                            )
+
+                                            embed.add_field(
+                                                name='Базові характеристики',
+                                                value=f'**Базове здоров\'я:** {stats["lvl_60"]["base_HP"]}\n**Базова шкода:** {stats["lvl_60"]["base_ATK"]}\n**Базовий захист:** {stats["lvl_60"]["base_DEF"]}\n**Шкода:** {stats["lvl_60"]["ATK"]}',
+                                                inline=False
+                                            )
+                                            update_item = stats['lvl_60']['update_item']
+                                            embed.add_field(
+                                                name='Ресурси для покращення',
+                                                value=f'**Місцеві диковини:**\n{update_item["local_specialty"]["name"]} - {update_item["local_specialty"]["count"]}\n\n**Камінь:**\n{update_item["stone"]["name"]} - {update_item["stone"]["count"]}\n\n**Ресурси із мобів:**\n{update_item["mob_loot"]["name"]} - {update_item["mob_loot"]["count"]}'
+                                            )
+                                            
+                                            embed.set_thumbnail(
+                                                url=traveler['avatar']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1054064966996598824/banners3.png'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+
+                                        if anemo_traveler_resource_menu.values[0] == '5':
+                                            embed = discord.Embed(
+                                                title='Рівні та ресурси',
+                                                color=0x90dfbd
+                                            )
+                                            print(anemo_traveler_resource_menu.values)
+                                            embed.set_author(
+                                                name=traveler['name']
+                                            )
+
+                                            embed.add_field(
+                                                name='Базові характеристики',
+                                                value=f'**Базове здоров\'я:** {stats["lvl_70"]["base_HP"]}\n**Базова шкода:** {stats["lvl_70"]["base_ATK"]}\n**Базовий захист:** {stats["lvl_70"]["base_DEF"]}\n**Шкода:** {stats["lvl_70"]["ATK"]}',
+                                                inline=False
+                                            )
+                                            update_item = stats['lvl_70']['update_item']
+                                            embed.add_field(
+                                                name='Ресурси для покращення',
+                                                value=f'**Місцеві диковини:**\n{update_item["local_specialty"]["name"]} - {update_item["local_specialty"]["count"]}\n\n**Камінь:**\n{update_item["stone"]["name"]} - {update_item["stone"]["count"]}\n\n**Ресурси із мобів:**\n{update_item["mob_loot"]["name"]} - {update_item["mob_loot"]["count"]}'
+                                            )
+                                            
+                                            embed.set_thumbnail(
+                                                url=traveler['avatar']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1054064966996598824/banners3.png'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        
+                                        if anemo_traveler_resource_menu.values[0] == '6':
+                                            embed = discord.Embed(
+                                                title='Рівні та ресурси',
+                                                color=0x90dfbd
+                                            )
+                                            print(anemo_traveler_resource_menu.values)
+                                            embed.set_author(
+                                                name=traveler['name']
+                                            )
+
+                                            embed.add_field(
+                                                name='Базові характеристики',
+                                                value=f'**Базове здоров\'я:** {stats["lvl_80"]["base_HP"]}\n**Базова шкода:** {stats["lvl_80"]["base_ATK"]}\n**Базовий захист:** {stats["lvl_80"]["base_DEF"]}\n**Шкода:** {stats["lvl_80"]["ATK"]}',
+                                                inline=False
+                                            )
+                                            update_item = stats['lvl_80']['update_item']
+                                            embed.add_field(
+                                                name='Ресурси для покращення',
+                                                value=f'**Місцеві диковини:**\n{update_item["local_specialty"]["name"]} - {update_item["local_specialty"]["count"]}\n\n**Камінь:**\n{update_item["stone"]["name"]} - {update_item["stone"]["count"]}\n\n**Ресурси із мобів:**\n{update_item["mob_loot"]["name"]} - {update_item["mob_loot"]["count"]}'
+                                            )
+                                            
+                                            embed.set_thumbnail(
+                                                url=traveler['avatar']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1054064966996598824/banners3.png'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        
+                                        if anemo_traveler_resource_menu.values[0] == '7':
+                                            embed = discord.Embed(
+                                                title='Рівні та ресурси',
+                                                color=0x90dfbd
+                                            )
+                                            print(anemo_traveler_resource_menu.values)
+                                            embed.set_author(
+                                                name=traveler['name']
+                                            )
+
+                                            embed.add_field(
+                                                name='Базові характеристики',
+                                                value=f'**Базове здоров\'я:** {stats["lvl_90"]["base_HP"]}\n**Базова шкода:** {stats["lvl_90"]["base_ATK"]}\n**Базовий захист:** {stats["lvl_90"]["base_DEF"]}\n**Шкода:** {stats["lvl_90"]["ATK"]}',
+                                                inline=False
+                                            )
+                                            update_item = stats['lvl_90']['update_item']
+                                            embed.add_field(
+                                                name='Ресурси для покращення',
+                                                value=f'**Місцеві диковини:**\n{update_item["local_specialty"]["name"]} - {update_item["local_specialty"]["count"]}\n\n**Камінь:**\n{update_item["stone"]["name"]} - {update_item["stone"]["count"]}\n\n**Ресурси із мобів:**\n{update_item["mob_loot"]["name"]} - {update_item["mob_loot"]["count"]}'
+                                            )
+                                            
+                                            embed.set_thumbnail(
+                                                url=traveler['avatar']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1054064966996598824/banners3.png'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+
+
                                     anemo_traveler_resource_menu.callback = character_level
                                     anemo_traveler_resurse_view = View()
                                     anemo_traveler_resurse_view.add_item(anemo_traveler_resource_menu)
                                     
                                     await interaction.response.edit_message(embed=embed, view=anemo_traveler_resurse_view)
-                            
+
+                                if anemo_traveler_menu.values[0] == '2':
+                                    embed = discord.Embed(
+                                        title='Сузір\'я',
+                                        description='Виберіть із списку потрібне вам сузір\'я. Ви отримаєте всю інформацію про сузір\'я персонажа.',
+                                        color=0x90dfbd
+                                    )
+                                    embed.set_thumbnail(
+                                        url=traveler['avatar']
+                                    ) 
+                                    embed.set_image(
+                                        url='https://media.discordapp.net/attachments/939569454390603837/1064661947527737425/banners4.jpeg'
+                                    )
+                                    
+                                    const = traveler['const']
+                                    anemo_traveler_const_menu = Select(
+                                        placeholder='Виберіть сузір\'я...',
+                                        options=[
+                                            discord.SelectOption(
+                                                label=const['const1']['name'],
+                                                value='1',
+                                                emoji=const['const1']['emoji']
+                                            ),
+                                            discord.SelectOption(
+                                                label=const['const2']['name'],
+                                                value='2',
+                                                emoji=const['const2']['emoji']
+                                            ),
+                                            discord.SelectOption(
+                                                label=const['const3']['name'],
+                                                value='3',
+                                                emoji=const['const3']['emoji']
+                                            ),
+                                            discord.SelectOption(
+                                                label=const['const4']['name'],
+                                                value='4',
+                                                emoji=const['const4']['emoji']
+                                            ),
+                                            discord.SelectOption(
+                                                label=const['const5']['name'],
+                                                value='5',
+                                                emoji=const['const5']['emoji']
+                                            ),
+                                            discord.SelectOption(
+                                                label=const['const6']['name'],
+                                                value='6',
+                                                emoji=const['const6']['emoji']
+                                            ),
+                                        ]
+                                    )
+                                    
+                                    async def character_const(interaction: discord.Interaction):
+                                        if anemo_traveler_const_menu.values[0] == '1':
+                                            embed = discord.Embed(
+                                                title=f'Сузір\'я - {const["const1"]["emoji"]}{const["const1"]["name"]}',
+                                                description=const['const1']['desc'],
+                                                color=0x90dfbd
+                                            )
+                                            embed.set_thumbnail(
+                                                url=const['const1']['image']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1064661947527737425/banners4.jpeg'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        if anemo_traveler_const_menu.values[0] == '2':
+                                            embed = discord.Embed(
+                                                title=f'Сузір\'я - {const["const2"]["emoji"]}{const["const2"]["name"]}',
+                                                description=const['const1']['desc'],
+                                                color=0x90dfbd
+                                            )
+                                            embed.set_thumbnail(
+                                                url=const['const2']['image']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1064661947527737425/banners4.jpeg'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        if anemo_traveler_const_menu.values[0] == '3':
+                                            embed = discord.Embed(
+                                                title=f'Сузір\'я - {const["const3"]["emoji"]}{const["const3"]["name"]}',
+                                                description=const['const3']['desc'],
+                                                color=0x90dfbd
+                                            )
+                                            embed.set_thumbnail(
+                                                url=const['const3']['image']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1064661947527737425/banners4.jpeg'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        if anemo_traveler_const_menu.values[0] == '4':
+                                            embed = discord.Embed(
+                                                title=f'Сузір\'я - {const["const4"]["emoji"]}{const["const4"]["name"]}',
+                                                description=const['const4']['desc'],
+                                                color=0x90dfbd
+                                            )
+                                            embed.set_thumbnail(
+                                                url=const['const4']['image']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1064661947527737425/banners4.jpeg'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        if anemo_traveler_const_menu.values[0] == '5':
+                                            embed = discord.Embed(
+                                                title=f'Сузір\'я - {const["const5"]["emoji"]}{const["const5"]["name"]}',
+                                                description=const['const5']['desc'],
+                                                color=0x90dfbd
+                                            )
+                                            embed.set_thumbnail(
+                                                url=const['const5']['image']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1064661947527737425/banners4.jpeg'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        if anemo_traveler_const_menu.values[0] == '6':
+                                            embed = discord.Embed(
+                                                title=f'Сузір\'я - {const["const6"]["emoji"]}{const["const6"]["name"]}',
+                                                description=const['const6']['desc'],
+                                                color=0x90dfbd
+                                            )
+                                            embed.set_thumbnail(
+                                                url=const['const6']['image']
+                                            )
+                                            embed.set_image(
+                                                url='https://media.discordapp.net/attachments/939569454390603837/1064661947527737425/banners4.jpeg'
+                                            )
+                                            
+                                            await interaction.response.edit_message(embed=embed)
+                                        
+                                    
+                                    anemo_traveler_const_menu.callback = character_const
+                                    anemo_traveler_const_view = View()
+                                    anemo_traveler_const_view.add_item(anemo_traveler_const_menu)
+                                    
+                                    await interaction.response.edit_message(embed=embed, view=anemo_traveler_const_view)
+                                    
                             anemo_traveler_menu.callback = character_info
                             anemo_traveler_view = View()
                             anemo_traveler_view.add_item(anemo_traveler_menu)
