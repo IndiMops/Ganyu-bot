@@ -1,0 +1,18 @@
+{
+    "messages": {
+        "test_locale": "It's just a test text",
+        "locale_name": "English",
+        "test_text": "It's just a test text...",
+        "test_text_var": "It's just a test text, what have a variable: {0}",
+        "set_locale_title": "☑ Bot language set",
+        "set_locale_description": "This server is now using `{0}`",
+        "error_locale_title": "🚫 Error installing language",
+        "error_locale_description": "Correct Usage: `/locale set`\nAvailable languages: {1}",
+        "dm_title": "🚫 Execution error",
+        "dm_description": "Commands can only be executed while on the server",
+        "reset_locale_title": "☑ Bot language reset",
+        "reset_locale_description": "The default locale `{0}` is now used.\nUse `/locale set` to select a different one",
+        "hint_none_locale_title": "⚠ Bot language not set",
+        "hint_none_locale_description": "This server uses default `{0}`.\nTo change it use `/locale set`"
+    }
+}

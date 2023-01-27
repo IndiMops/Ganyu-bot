@@ -8,6 +8,9 @@ import config
 from config import settings
 import sqlite3
 import requests
+from os import listdir
+from functions import GetMsg, GuildConfGet, GuildConfReset, GuildConfSet, LoadJson, StrToColor
+
 
 data = sqlite3.connect('data.sqlite')#connect to BD
 cur = data.cursor()
@@ -252,6 +255,10 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
                 color=0xff0000
             )
             await ctx.reply(embed=embed)
+    
+    @app_commands.command(name='test_locale', description='Check locale settings')
+    async def test_locale_(self, interaction: discord.Interaction):
+        await interaction.response.send_message(GetMsg('test_locale', interaction.guild))
     
 async def setup(bot):
     await bot.add_cog(Test_Commands(bot))

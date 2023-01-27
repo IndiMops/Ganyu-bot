@@ -1,0 +1,14 @@
+{
+    "wowner": "734082410504781854",
+    "bot_name": "Sorawo",
+    "bot_token": "OTI3MTY0NTcxMTM4MDE1MjMy.GUxVXv.h-jmnkENr6kizsrjm_RZC5lonrT19e5uArx4D4",
+    "bot_prefix": ".",
+    "bot_locale": "en",
+    "bot_activity": "Blackout(",
+    "color_default": "0x2596be",
+    "color_ok": "0x226699",
+    "color_warn": "0xFFCC4D",
+    "color_error": "0xDD2E44",
+    "bot_site": "https://sorawo.bot",
+    "bot_icon": "https://media.discordapp.net/attachments/939569454390603837/1068470003109744711/index.jpg"
+}
