@@ -1,0 +1,23 @@
+{
+    "messages": {
+        "test_locale": "これは単なるテストテキストです",
+        "locale_name": "日本",
+        "test_text": "これはただのテストテキストです...",
+        "test_text_var": "これは変数を含む単なるテスト テキストです: {0}",
+        "set_locale_title": "ボット言語が設定されています",
+        "set_locale_description": "このサーバーは現在 `{0}` を使用しています",
+        "error_locale_title": "言語設定エラー",
+        "error_locale_description": "正しい使用法: `/locale set`\\n利用可能な言語: {1}",
+        "dm_title": "実行エラー",
+        "dm_description": "コマンドはサーバー上でのみ実行できます",
+        "reset_locale_title": "ボットの言語はリセットされています",
+        "reset_locale_description": "デフォルトの言語 `{0}` が使用されています。\\n別の言語を選択するには、`/locale set` を使用してください",
+        "hint_none_locale_title": "ボット言語が設定されていません",
+        "hint_none_locale_description": "このサーバーはデフォルト言語 `{0}` を使用します。\\n変更するには `/locale set` を使用してください ",
+        "bot_on_ready": "{} さんがDiscordに接続しました。",
+        "bot_cync_command_cmd": "Information: 同期されたスラッシュコマンドは {0} です。",
+        "bot_first_status": "{0}help | v{1}",
+        "bot_second_status": "{0}人のユーザーに対して。",
+        "debug_status": "{0}: ボットがステータスを{1}に変更しました。"
+    }
+}

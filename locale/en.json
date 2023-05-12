@@ -1,18 +1,23 @@
 {
     "messages": {
-        "test_locale": "It's just a test text",
+        "test_locale": "This is just a test text.",
         "locale_name": "English",
-        "test_text": "It's just a test text...",
-        "test_text_var": "It's just a test text, what have a variable: {0}",
-        "set_locale_title": "☑ Bot language set",
+        "test_text": "This is just a test text...",
+        "test_text_var": "This is just a test text that contains a variable: {0}",
+        "set_locale_title": "The bot language is set",
         "set_locale_description": "This server is now using `{0}`",
-        "error_locale_title": "🚫 Error installing language",
-        "error_locale_description": "Correct Usage: `/locale set`\nAvailable languages: {1}",
-        "dm_title": "🚫 Execution error",
+        "error_locale_title": "Error setting language",
+        "error_locale_description": "Correct usage: `/locale set`\\nAvailable languages: {1}",
+        "dm_title": "Execution error",
         "dm_description": "Commands can only be executed while on the server",
-        "reset_locale_title": "☑ Bot language reset",
-        "reset_locale_description": "The default locale `{0}` is now used.\nUse `/locale set` to select a different one",
-        "hint_none_locale_title": "⚠ Bot language not set",
-        "hint_none_locale_description": "This server uses default `{0}`.\nTo change it use `/locale set`"
+        "reset_locale_title": "The language of the bot is reset",
+        "reset_locale_description": "The default language `{0}` is now used.\\nUse `/locale set` to select another",
+        "hint_none_locale_title": "The bot language is not set",
+        "hint_none_locale_description": "This server uses the default language `{0}`.\\nTo change it use `/locale set`",
+        "bot_on_ready": "{} joined Discord.",
+        "bot_cync_command_cmd": "Information: Synchronized {0} slash commands",
+        "bot_first_status": "{0}help | v{1}",
+        "bot_second_status": "by {0} users",
+        "debug_status": "{0}: Bot changed the status to {1}"
     }
 }

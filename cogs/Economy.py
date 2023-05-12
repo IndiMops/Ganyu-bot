@@ -2,16 +2,18 @@
 from discord.ext import commands
 import discord
 from discord import app_commands
-from config import settings
 from asyncio import sleep
 import sqlite3
 import random
 import easy_pil
 from io import BytesIO
+from ganyu import *
 
 
 data = sqlite3.connect('data.sqlite')# connected to BD
 cur = data.cursor()
+config = LoadJson("config.json")
+
 cur.execute("""CREATE TABLE IF NOT EXISTS users (
         'id' INT,
         'name' TEXT,
@@ -307,7 +309,7 @@ class Economy(commands.Cog, name='Економічні команди'):
             emb = discord.Embed(
                 title = 'Досвід успішно змінено',
                 description=f'Досвід користувача **<@{user.id}>** упішно змінено на **{count}**',
-                color = settings['color']
+                color = StrToColor(config['color_default'])
             )
             await interaction.response.send_message(embed = emb, ephemeral=True)
             data.commit()
@@ -316,7 +318,7 @@ class Economy(commands.Cog, name='Економічні команди'):
             emb = discord.Embed(
                 title = 'Досвід успішно змінено',
                 description=f'Досвід користувача **<@{user.id}>** упішно змінено на **{count}**',
-                color = settings['color']
+                color = StrToColor(config['color_default'])
             )
             await interaction.response.send_message(embed = emb, ephemeral=True)
             data.commit()
@@ -328,11 +330,11 @@ class Economy(commands.Cog, name='Економічні команди'):
     async def set_lvl_(self, interaction: discord.Interaction, count:int, user: discord.Member = None):
         for row in cur.execute(f'SELECT commands FROM stats_bot'):
             StBcommands = row[0]
-        if interaction.user.id == settings['dev']['id']:
+        if interaction.user.id == config['dev']['id']:
             embed = discord.Embed(
                 title='Помилка',
                 description='Вибач, але змінювати рівень іншим користувачам зараз не можливо',
-                color=settings['error_color']
+                color=StrToColor(config['color_error'])
             )
             
             await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -343,7 +345,7 @@ class Economy(commands.Cog, name='Економічні команди'):
                 emb = discord.Embed(
                     title = 'Рівень успішно змінено',
                     description=f'Рівень користувача **<@{user.id}>** упішно змінено на **{count}**',
-                    color = settings['color']
+                    color = StrToColor(config['color_default'])
                 )
                 await interaction.response.send_message(embed = emb, ephemeral=True)
                 data.commit()
@@ -352,7 +354,7 @@ class Economy(commands.Cog, name='Економічні команди'):
                 emb = discord.Embed(
                     title = 'Рівень успішно змінено',
                     description=f'Рівень користувача **<@{user.id}>** упішно змінено на **{count}**',
-                    color = settings['color']
+                    color = StrToColor(config['color_default'])
                 )
                 await interaction.response.send_message(embed = emb, ephemeral=True)
                 data.commit()
@@ -369,8 +371,8 @@ class Economy(commands.Cog, name='Економічні команди'):
         for i in cur.execute(f'SELECT id FROM users WHERE server_id = {interaction.user.guild.id}'):
             count_member+=1
         embed = discord.Embed(
-            title=f'Свього окристувачів: {count_member}',
-            color=settings['color']
+            title=f'Всього користувачів: {count_member}',
+            color=StrToColor(config['color_default'])
         )
         
         for row in cur.execute(f'SELECT name, lvl, xp FROM users WHERE server_id = {interaction.user.guild.id} ORDER BY lvl DESC, xp DESC, name ASC LIMIT 10'):

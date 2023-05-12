@@ -3,12 +3,13 @@ from discord.ext import commands
 from discord import app_commands
 from discord.ui import Select, View, Button
 from discord import ui
-from config import settings
 import sqlite3
 import json
+from ganyu import *
 
 data = sqlite3.connect('data.sqlite')#connect to BD
 cur = data.cursor()
+config = LoadJson("config.json")# load config
 
 class Character(commands.Cog):
     def __init__(self, bot):
@@ -650,7 +651,7 @@ class Character(commands.Cog):
             embed = discord.Embed(
                 title='Персонажі',
                 description='Персонажі є одержуваними одиницями в Ґеншін Імпакт. Вони бувають різної рідкості (4-зіркові та 5-зіркові), узгоджені зі стихією, оснащені певною зброєю та належать до регіону.',
-                color=settings['color']
+                color=StrToColor(config['color_default'])
             )
             embed.add_field(
                 name='Як отримати?',
@@ -658,7 +659,7 @@ class Character(commands.Cog):
                 inline=False
             )
             embed.set_thumbnail(
-                url=settings['avatar']
+                url=config["bot_icon"]
             )
             embed.set_image(
                 url='https://media.discordapp.net/attachments/939569454390603837/1052884455355850752/chapter.png'

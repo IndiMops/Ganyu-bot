@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user[0] }}{% endblock title %}
+
+{% block body %}
+Привіт {{ user[0] }}
+<img class="img-fluid" src="https://cdn.discordapp.com/avatars/{{ user[3] }}/{{ user[2] }}.png" alt="">
+{% endblock body %}

@@ -4,16 +4,15 @@ from discord.ext import commands, tasks
 from discord.ui import Select, View, Button
 from discord import ui
 from discord import app_commands
-import config
-from config import settings
 import sqlite3
 import requests
 from os import listdir
-from functions import GetMsg, GuildConfGet, GuildConfReset, GuildConfSet, LoadJson, StrToColor
+from ganyu import *
 
 
 data = sqlite3.connect('data.sqlite')#connect to BD
 cur = data.cursor()
+config = LoadJson("config.json")# load config
 
 class Test_Commands(commands.Cog, name='Команди розробника'):
     """Команди для перевірки різних функцій, подій і т.д.
@@ -67,7 +66,7 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
         )
         
         async def button_call_back(interaction:discord.Integration):
-            await interaction.response.send_message(embed=discord.Embed(title='Hello', color=config.settings['color']), ephemeral=True)
+            await interaction.response.send_message(embed=discord.Embed(title='Hello', color=StrToColor(config["color_default"])), ephemeral=True)
         
         button1.callback = button_call_back
         
@@ -190,7 +189,7 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
 
     @commands.command()
     async def get_user(self, ctx, user: discord.Member):
-            headers = {"Authorization": f"Bot {settings['token']}"}
+            headers = {"Authorization": f"Bot {config['bot_token']}"}
             req = requests.get(f"https://discord.com/api/v9/users/{user.id}", headers=headers).json()
             await ctx.reply(req)
 

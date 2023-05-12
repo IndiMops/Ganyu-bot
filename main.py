@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import discord
 from discord.ext import commands, tasks
-from config import settings
 import asyncio
 import os
 import logging
@@ -10,6 +9,7 @@ from time import gmtime
 import sqlite3
 import random
 from discord import app_commands
+from ganyu import *
 
 bot = commands.Bot(commands.when_mentioned_or('.'), intents = discord.Intents.all())
 bot.remove_command('help')
@@ -17,10 +17,11 @@ discord.utils.setup_logging(level = logging.INFO, root = False)
 
 data = sqlite3.connect('data.sqlite')#connect to BD
 cur = data.cursor()
+config = LoadJson("config.json")# load config
 
 @bot.event
 async def on_ready():
-    print(f'{bot.user.name} підключився до Discord.')
+    print(GetMsg("bot_on_ready").format(config["bot_name"]))
     
     data = sqlite3.connect('data.sqlite')#connect to BD
     cur = data.cursor()
@@ -58,20 +59,20 @@ async def up_db():
 async def sync():
     """Synchronization of slash commands"""
     fmt = await bot.tree.sync()
-    print(f'\033[34mInformation\033[0m: Синхронізовано {len(fmt)} слеш-команд')
+    print(GetMsg("bot_cync_command_cmd")).format(len(fmt))
     await asyncio.sleep(10)
 
 async def ch_pr():
     await bot.wait_until_ready()
     
-    statuses = [f"{settings['prefix']}help | v{settings['version']}", f"за {len(bot.users)} користувачів"]
+    statuses = [GetMsg("bot_first_status").format(config['bot_prefix'], config['bot_version']), GetMsg("bot_second_status").format(len(bot.users))]
     while not bot.is_closed():
         status = random.choice(statuses)
         if status == statuses[0]:
             await bot.change_presence(status = discord.Status.online, activity = discord.Game(status))
         else:
             await bot.change_presence(status = discord.Status.online, activity = discord.Activity(type = discord.ActivityType.watching, name = status))
-        print(f'\033[33m{settings["name"]}\033[0m: Bot changed the status to \033[11m{status}\033[0m')
+        # print(GetMsg("debug_status")).format(config["bot_name"], status)
         await asyncio.sleep(30)
         
         bot.loop.create_task(sync())
@@ -84,27 +85,27 @@ async def on_command_error(ctx, error):
         cooldown = int(error.retry_after)
         cool = 0
         if cooldown < 60:
-            cool = strftime('%S сек.', gmtime(cooldown))
+            cool = strftime(GetMsg("seconds"), gmtime(cooldown))
         elif 60 < cooldown < 3600:
-            cool = strftime('%M хв. %S сек.', gmtime(cooldown))
+            cool = strftime(GetMsg("minutes"), gmtime(cooldown))
         elif 3600 < cooldown < 86400:
-            cool = strftime('%H год. %M хв. %S сек.', gmtime(cooldown))
+            cool = strftime(GetMsg("hours"), gmtime(cooldown))
         elif 86400 < cooldown < 604800 or cooldown > 604800:
-            cool = strftime('%d днів %H год. %M хв. %S сек.', gmtime(cooldown))
+            cool = strftime(GetMsg("days"), gmtime(cooldown))
                     
         embed = discord.Embed(
-            title='Помилка!',
-            description=f'Ви ще не можете використовувати цю команду!\nСпробуйте через: **{cool}**',
-            color=0xff0000
+            title=GetMsg("title_error"),
+            description=GetMsg("desc_cooldown_command").format(cool),
+            color=StrToColor(config['color_error'])
         )
         await ctx.reply(embed=embed)
         print(error)
     
     if isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(
-            title='Помилка!',
-            description=f'Дану комнаду не знайдено!\nСкористайтесь: `{settings["prefix"]}help`',
-            color=0xff0000
+            title=GetMsg("title_error"),
+            description=GetMsg("desc_command_not_found").format(config["bot_prefix"]),
+            color=StrToColor(config['color_error'])
         )
         
         await ctx.reply(embed=embed)
@@ -116,7 +117,7 @@ async def on_command_completion(ctx):
             StBcommands = row[0]
     cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
     data.commit()
-    print(f'\nВиконалась команда\nВсього виконано: {StBcommands + 1}\n')
+    #print(f'\nВиконалась команда\nВсього виконано: {StBcommands + 1}\n')
 
 async def load_extensions():
     """Load cogs for main file
@@ -128,7 +129,7 @@ async def load_extensions():
 
 async def main():
     await load_extensions()
-    await bot.start(settings['token'])
+    await bot.start(config["bot_token"])
 
 if __name__ == '__main__':
     asyncio.run(main())

@@ -1,0 +1,23 @@
+{
+    "messages": {
+        "test_locale": "To tylko testowy tekst",
+        "locale_name": "Polski",
+        "test_text": "To tylko testowy tekst...",
+        "test_text_var": "To jest tylko tekst testowy, który zawiera zmienną: {0}",
+        "set_locale_title": "Język bota jest ustawiony",
+        "set_locale_description": "Ten serwer jest już w użyciu `{0}`",
+        "error_locale_title": "Błąd ustawienia języka",
+        "error_locale_description": "Prawidłowe użycie: `/locale set`\\nDostępne języki: {1}",
+        "dm_title": "Błąd wykonania",
+        "dm_description": "Polecenia można wykonywać tylko na serwerze.",
+        "reset_locale_title": "Mój bot został usunięty",
+        "reset_locale_description": "Obecnie używany jest język standardowy `{0}`.\\nДля вибору іншої використовуйте `/locale set`",
+        "hint_none_locale_title": "Język bota nie jest ustawiony",
+        "hint_none_locale_description": "Na tym serwerze używany jest standardowy język `{0}`.\\nAby to zmienić, użyj `/locale set`",
+        "bot_on_ready": "{} dołączył do Discorda.",
+        "bot_cync_command_cmd": "Informacje: Zsynchronizowano polecenie ukośnika {0}",
+        "bot_first_status": "{0}help | v{1}",
+        "bot_second_status": "{0} użytkowników",
+        "debug_status": "{0}: Bot zmienił swój status na {1}"
+    }
+}

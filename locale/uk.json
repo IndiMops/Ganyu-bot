@@ -1,18 +1,23 @@
 {
     "messages": {
-        "test_locale": "Це всьоголиш тестовий текст",
+        "test_locale": "Це всього лиш тестовий текст",
         "locale_name": "Українська",
         "test_text": "Це просто тестовий текст...",
         "test_text_var": "Це просто тестовий текст, що має в собі змінну: {0}",
-        "set_locale_title": "☑ Мова бота встановлена",
+        "set_locale_title": "Мова бота встановлена",
         "set_locale_description": "На цьому сервері тепер використовується `{0}`",
-        "error_locale_title": "🚫 Помилка встановлення мови",
+        "error_locale_title": "Помилка встановлення мови",
         "error_locale_description": "Правильне використання: `/locale set`\\nДоступні мови: {1}",
-        "dm_title": "🚫 Помилка виконання",
+        "dm_title": "Помилка виконання",
         "dm_description": "Команди можна виконувати лише перебуваючи на сервері",
-        "reset_locale_title": "☑ Мова бота скинута",
-        "reset_locale_description": "Тепер використовується стандартна мова `{0}`.\\nДля вибору іншого використовуйте `/locale set`",
-        "hint_none_locale_title": "⚠ Мова бота не встановлена",
-        "hint_none_locale_description": "На цьому сервері використовується стандартний `{0}`.\\nЩоб змінити його використовуйте `/locale set`"
+        "reset_locale_title": "Мова бота скинута",
+        "reset_locale_description": "Тепер використовується стандартна мова `{0}`.\\nДля вибору іншої використовуйте `/locale set`",
+        "hint_none_locale_title": "Мова бота не встановлена",
+        "hint_none_locale_description": "На цьому сервері використовується стандартна мова `{0}`.\\nЩоб змінити його використовуйте `/locale set`",
+        "bot_on_ready": "{} підключився до Discord.",
+        "bot_cync_command_cmd": "Information: Синхронізовано {0} слеш-команд",
+        "bot_first_status": "{0}help | v{1}",
+        "bot_second_status": "за {0} користувачами",
+        "debug_status": "{0}: Бот змінив статус на {1}"
     }
 }

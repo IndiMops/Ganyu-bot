@@ -1,14 +1,30 @@
 {
-    "wowner": "734082410504781854",
-    "bot_name": "Sorawo",
-    "bot_token": "OTI3MTY0NTcxMTM4MDE1MjMy.GUxVXv.h-jmnkENr6kizsrjm_RZC5lonrT19e5uArx4D4",
+    "bot_name": "Ganyu",
+    "bot_token": "TOKEN",
     "bot_prefix": ".",
-    "bot_locale": "en",
-    "bot_activity": "Blackout(",
-    "color_default": "0x2596be",
-    "color_ok": "0x226699",
-    "color_warn": "0xFFCC4D",
-    "color_error": "0xDD2E44",
-    "bot_site": "https://sorawo.bot",
-    "bot_icon": "https://media.discordapp.net/attachments/939569454390603837/1068470003109744711/index.jpg"
+    "bot_locale": "uk",
+    "color_default": "#809dd5",
+    "color_ok": "#41e332",
+    "color_warn": "#FFCC4D",
+    "color_error": "#DD2E44",
+    "bot_site": "https://indmops.pythonanywhere.com",
+    "bot_icon": "https://media.discordapp.net/attachments/939569454390603837/1034701808993579008/GenshinImpact_Ganyu_Liyue.jpg",
+    "bot_version": "2.1.0",
+    "chat_gpt": {
+        "api_key": "API_KEY",
+        "model": "gpt-3.5-turbo",
+        "max_token_limit": 2048,
+        "model_self": "You are Ganyu. A helper bot that helps beginners and skilled adventure seekers and explore the world of Teiwat. Teiwat is a fictional world in Genshin Impact and Ganyu is Liyue Qixing's secretary."
+    },
+    "other_links": {
+        "support_server": "https://discord.gg/ZZ94ZN42",
+        "top.gg": "https://top.gg/bot/938580973057093702",
+        "github_repo": "https://github.com/IndiMops/Ganyu-bot",
+        "patreon": "https://www.patreon.com/indi_mops",
+        "diaka": "https://indi-mops.diaka.ua/donate"
+    },
+    "dev": {
+        "name": "Indi Mops#0424",
+        "id": "734082410504781854"
+    }
 }
