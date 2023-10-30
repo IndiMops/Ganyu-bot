@@ -5,6 +5,7 @@ from os import listdir, makedirs, remove, stat, path
 from typing import Any, Literal, Union
 import openai
 import functools
+import random
 
 try:
     with open("config.json", 'r', encoding="utf-8") as json_file:
@@ -19,7 +20,7 @@ def SaveJson(value: Any, filename: str) -> None:
         f.write(dumps(value, indent=4, ensure_ascii=False))
         f.close()
 
-      
+
 def LoadJson(filename: str) -> Any:
     try:
         with open(filename, 'r', encoding="utf-8") as json_file:
@@ -31,15 +32,17 @@ def LoadJson(filename: str) -> Any:
     return output
 
 
-def GuildConfGet(guild: Guild, variable: str) -> Any:
+def GuildConfGet(guild: Guild, variable: str) -> str | None:
     global debug
     try:
         config = LoadJson(f"guilds/{str(guild.id)}/config.json")
         return config[variable]
     except Exception as exp:
-        print(f"Could not get guild config key '{variable}' due to {exp}", guild)
+        print(
+            f"Could not get guild config key '{variable}' due to {exp}", guild)
         return None
-    
+
+
 def GuildConfSet(guild: Guild, variable: str, value: Any) -> None:
     config = LoadJson(f"guilds/{str(guild.id)}/config.json")
     config[variable] = value
@@ -47,7 +50,6 @@ def GuildConfSet(guild: Guild, variable: str, value: Any) -> None:
         SaveJson(config, f"guilds/{str(guild.id)}/config.json")
     except:
         makedirs(f"guilds/{str(guild.id)}", exist_ok=True)
-        makedirs(f"guilds/{str(guild.id)}/channels", exist_ok=True)
         SaveJson(config, f"guilds/{str(guild.id)}/config.json")
     print(f"Guild config key '{variable}' is now set to '{value}'", guild)
 
@@ -60,11 +62,11 @@ def GuildConfReset(guild: Guild, variable: str) -> None:
             SaveJson(config, f"guilds/{str(guild.id)}/config.json")
         except:
             makedirs(f"guilds/{str(guild.id)}", exist_ok=True)
-            makedirs(f"guilds/{str(guild.id)}/channels", exist_ok=True)
             SaveJson(config, f"guilds/{str(guild.id)}/config.json")
         print(f"Guild config key '{variable}' has been reset", guild)
     except Exception as exp:
-        print(f"Could not reset guild config key '{variable}' due to {exp}", guild)
+        print(
+            f"Could not reset guild config key '{variable}' due to {exp}", guild)
 
 
 def GuildLocaleGet(guild: Guild) -> str:
@@ -88,59 +90,40 @@ def GetMsg(string: str, guild: Union[Guild, None] = None) -> str:
             locale = LoadJson(f'locale/{GuildLocaleGet(guild)}.json')
         return locale["messages"][string]
     except Exception as exp:
-        print(f"Could not get locale string named {string} due to exception {exp}", guild)
+        print(
+            f"Could not get locale string named {string} due to exception {exp}", guild)
         return string
+
 
 def StrToColor(string: str) -> int:
     return int(hex(int(string.replace("#", ""), 16)), 0)
 
-@functools.lru_cache(maxsize=128)
-def Chat(prompt: str) -> str:
-    """Submits a ChatGPT request and returns a response from the chat
+
+def HexToRgb(hex: str):
+    if len(hex) > 7:
+        raise ValueError("Color size exceeds 7 characters")
+    else:
+        if hex.startswith("#"):
+            hex.replace("#", "")
+        rgb = []
+        for i in (0, 2, 4):
+            decimal = int(hex[i:i+2], 16)
+            rgb.append(decimal)
+        return rgb
     
-    Arguments:
-    prompt: str 
-        Your question
-    Return: str
-        Return answer from ChatGPT
-    """
-    
-    config = LoadJson("config.json")
-    openai.api_key = config['chat_gpt']['api_key']
-    max_token_limit = config['chat_gpt']['max_token_limit']
+def RandomColor() -> tuple[int, int, int]:
+    red = random.randint(0, 255)
+    green = random.randint(0, 255)
+    blue = random.randint(0, 255)
 
-    messages = [
-        {"role": "system", "content": f"{config['chat_gpt']['model_self']}"},
-    ]
+    # Повертаємо кортеж (red, green, blue)
+    return red, green, blue
 
+def GetCommand(id: int) -> dict:
+    try:
+        config = LoadJson('config.json')
+        return config["bot_commands"][str(id)]
+    except Exception as exp:
+        print(f"Failed to get command at {id} due to an exception")
+        return
 
-    if not prompt:
-        raise PromptEmpty('Поле питання не може бути порожнім!')
-
-    messages.append({"role": "user", "content": prompt})
-
-    # Перевірка ліміту токенів
-    total_tokens = sum(len(message["content"].split()) for message in messages)
-    if total_tokens > max_token_limit:
-        excess_tokens = total_tokens - max_token_limit
-        removed_messages = 0
-
-        # Видалення попередніх повідомлень, поки не буде звільнено достатньо токенів
-        for message in reversed(messages):
-            message_tokens = len(message["content"].split())
-            if excess_tokens >= message_tokens:
-                messages.remove(message)
-                excess_tokens -= message_tokens
-                removed_messages += 1
-            else:
-                break
-
-        print(f'Перевищено ліміт токенів. Видалено {removed_messages} попередніх повідомлень.')
-
-    response = openai.ChatCompletion.create(
-        model = config['chat_gpt']['model'],
-        messages = messages
-    )
-
-    answer = response['choices'][0]['message']['content']
-    return answer

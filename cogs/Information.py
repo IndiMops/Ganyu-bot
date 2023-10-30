@@ -9,6 +9,7 @@ import requests
 from ganyu import *
 import datetime
 import asyncio
+import random
 
 data = sqlite3.connect('data.sqlite')#connect to BD
 cur = data.cursor()
@@ -18,131 +19,131 @@ class Information(commands.Cog):
     """information module"""
     def __init__(self, bot):
         self.bot = bot
-        self.user_info = app_commands.ContextMenu(
-            name='Інформація',
-            callback=self.user_info_callback
+        """self.user_info = app_commands.ContextMenu(
+            name = GetMsg("context_command_user_name"),
+            callback = self.user_info_callback
         )
-        self.bot.tree.add_command(self.user_info)    
+        self.bot.tree.add_command(self.user_info)
+        """  
         
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print('Information commands - Ready!')
         global start_time
         start_time = int(time.time())
     
-    @app_commands.command(name='help', description='Команда довідка')
+    @app_commands.command(name = 'help', description = GetMsg("command_descriptions_help"))
     async def help(self, interaction: discord.Interaction, command: str = None):
         if command == None:
             menu = Select(
-                placeholder='Виберіть категорію...',
-                options=[
+                placeholder = GetMsg("select_component_placeholder", interaction.guild),
+                options = [
                     discord.SelectOption(
-                        label='Інформація',
-                        value='1',
-                        emoji='📃'
+                        label = GetMsg("command_help_selection_options_label_information", interaction.guild),
+                        value = '1',
+                        emoji = '📃'
                     ),
                     discord.SelectOption(
-                        label='Економіка',
-                        value='2',
-                        emoji='💰'
+                        label = GetMsg("command_help_selection_options_label_ranking", interaction.guild),
+                        value = '2',
+                        emoji = '🏆'
                     )
                 ]
             )
             
-            async def callback(interaction:discord.Integration):
+            async def callback(interaction: discord.Integration):
                 if menu.values[0] == '1':
                     embed = discord.Embed(
-                        title='Доступні команди категорії 📃Інформація',
-                        description=f'Ви можете отримати детальну інформацію для кожної команди, викликавши її за допомогою {config["bot_prefix"]}help `<command:назва команди чи категорії>`',
-                        color=StrToColor(config['color_default'])
+                        title = GetMsg("command_help_information_embed_title", interaction.guild),
+                        description = GetMsg("commandd_help_inforation_embed_descriptions", interaction.guild).format(GetCommand(0)["name"], GetCommand(0)["id"]),
+                        color = StrToColor(config['color_default'])
                     )
                     embed.set_thumbnail(
-                        url=config["bot_icon"]
+                        url = config["bot_icon"]
                     )
                     embed.set_footer(
-                        text='Mops Storage © 2020-2022 Всі права захищено • https://mops-storage.xyz',
-                        icon_url=config["bot_icon"]
+                        text = GetMsg("footer_copyright_with_link", interaction.guild).format(datetime.datetime.now().year, config["dev"]["site"]),
+                        icon_url = config["bot_icon"]
                     )
                     embed.add_field(
-                        name=f'{config["bot_prefix"]}help',
-                        value='Перелік всіх команд та категорій',
-                        inline=False
+                        name = "</{0}:{1}>".format(GetCommand(0)["name"], GetCommand(0)["id"]),
+                        value = GetMsg("command_help_information_help_descriptions", interaction.guild),
+                        inline = False
                     )
                     embed.add_field(
-                        name=f'{config["bot_prefix"]}info',
-                        value=f'Корисна інформація про {config["bot_name"]}',
-                        inline=False
+                        name = "</{0}:{1}>".format(GetCommand(1)["name"], GetCommand(1)["id"]),
+                        value = GetMsg("command_help_information_info_descriptions", interaction.guild).format(config["bot_name"]),
+                        inline = False
                     )
                     embed.add_field(
-                        name=f'{config["bot_prefix"]}stats',
-                        value=f'Статистика використання {config["bot_name"]}',
-                        inline=False
+                        name = "</{0}:{1}>".format(GetCommand(2)["name"], GetCommand(2)["id"]),
+                        value = GetMsg("command_help_information_stats_descriptions", interaction.guild).format(config["bot_name"]),
+                        inline = False
                     )
                     embed.add_field(
-                        name=f'{config["bot_prefix"]}server',
-                        value='Інформація про поточний сервер',
-                        inline=False
+                        name = "</{0}:{1}>".format(GetCommand(3)["name"], GetCommand(3)["id"]),
+                        value = GetMsg("command_help_information_server_descriptions", interaction.guild).format(config["bot_name"]),
+                        inline = False
                     )
                     embed.add_field(
-                        name=f'{config["bot_prefix"]}user',
-                        value='Інформація про учасника',
-                        inline=False
+                        name = "</{0}:{1}>".format(GetCommand(4)["name"], GetCommand(4)["id"]),
+                        value = GetMsg("command_help_information_user_descriptions", interaction.guild),
+                        inline = False
                     )
                     embed.add_field(
-                        name=f'{config["bot_prefix"]}bio',
-                        value='Встановити біографію',
-                        inline=False
+                        name = "</{0}:{1}>".format(GetCommand(5)["name"], GetCommand(5)["id"]),
+                        value = GetMsg("command_help_information_bio_descriptions", interaction.guild),
+                        inline = False
                     )
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
+                    await interaction.response.send_message(embed = embed)
                     
                 if menu.values[0] == '2':
                     embed = discord.Embed(
-                        title='Доступні команди категорії 💰Економіка',
-                        description=f'Ви можете отримати детальну інформацію для кожної команди, викликавши її за допомогою {config["bot_prefix"]}help `<command:назва команди чи категорї>`',
-                        color=StrToColor(config['color_default'])
+                        title = GetMsg("command_help_ranking_embed_title", interaction.guild),
+                        description = GetMsg("commandd_help_inforation_embed_descriptions", interaction.guild).format(GetCommand(0)["name"], GetCommand(0)["id"]),
+                        color = StrToColor(config['color_default'])
                     )
                     embed.set_thumbnail(
-                        url=config["bot_icon"]
+                        url = config["bot_icon"]
                     )
                     embed.set_footer(
-                        text='Mops Storage © 2020-2022 Всі права захищено • https://mops-storage.xyz',
-                        icon_url=config["bot_icon"]
+                        text = GetMsg("footer_copyright_with_link", interaction.guild).format(datetime.datetime.now().year, config["dev"]["site"]),
+                        icon_url = config["bot_icon"]
                     )
                     embed.add_field(
-                        name=f'{config["bot_prefix"]}card `<користувач>`',
-                        value='Виводить інформацію про рівень користувача',
-                        inline=False
+                        name = "</{0}:{1}>".format(GetCommand(6)["name"], GetCommand(6)["id"]),
+                        value = GetMsg("command_help_ranking_card_descriptions", interaction.guild),
+                        inline = False
                     )
                     
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
+                    await interaction.response.send_message(embed = embed)
                 
             menu.callback = callback
             view = View()
             view.add_item(menu)
             
-            embed=discord.Embed(
-                title='Доступні команди:',
-                description=f'Ви можете отримати детальну інформацію для кожної команди, викликавши її за допомогою {config["bot_prefix"]}help `<command:назва команди чи категорії>`',
-                color=StrToColor(config['color_default'])
+            embed = discord.Embed(
+                title = GetMsg("title_avalible_commands", interaction.guild),
+                description = GetMsg("commandd_help_inforation_embed_descriptions", interaction.guild).format(GetCommand(0)["name"], GetCommand(0)["id"]),
+                color = StrToColor(config['color_default'])
                 )
-            embed.set_thumbnail(url=config["bot_icon"])
+            embed.set_thumbnail(url = config["bot_icon"])
             embed.set_footer(
-                text='Mops Storage © 2020-2022 Всі права захищено • https://mops-storage.xyz',
-                icon_url=config["bot_icon"]
+                text = GetMsg("footer_copyright_with_link", interaction.guild).format(datetime.datetime.now().year, config["dev"]["site"]),
+                icon_url = config["bot_icon"]
                 )
             embed.add_field(
-                name=f'📃Information (`{config["bot_prefix"]}help <command:Information>)`',
-                value=f'`{config["bot_prefix"]}help` `{config["bot_prefix"]}info` `{config["bot_prefix"]}stats` `{config["bot_prefix"]}server` `{config["bot_prefix"]}user` `{config["bot_prefix"]}bio`',
-                inline=False
+                name = GetMsg("command_help_embed_title_information", interaction.guild).format(GetCommand(0)["name"], GetCommand(0)["id"]),
+                value = "</{0}:{1}> </{2}:{3}> </{4}:{5}> </{6}:{7}> </{8}:{9}> </{10}:{11}>".format(GetCommand(0)["name"], GetCommand(0)["id"], GetCommand(1)["name"], GetCommand(1)["id"], GetCommand(2)["name"], GetCommand(2)["id"], GetCommand(3)["name"], GetCommand(3)["id"], GetCommand(4)["name"], GetCommand(4)["id"], GetCommand(5)["name"], GetCommand(5)["id"]),
+                inline = False
                 )
             embed.add_field(
-                name=f'💰Економіка (`{config["bot_prefix"]}help <command:Economy>)`',
-                value=f'`{config["bot_prefix"]}card` `{config["bot_prefix"]}set_xp` `{config["bot_prefix"]}set_lvl`',
-                inline=False
+                name = GetMsg("command_help_embed_title_ranking", interaction.guild).format(GetCommand(0)["name"], GetCommand(0)["id"]),
+                value = '</{0}:{1}> </{2}:{3}> </{4}:{5}> </{6}:{7}>'.format(GetCommand(6)["name"], GetCommand(6)["id"], GetCommand(7)["name"], GetCommand(7)["id"], GetCommand(8)["name"], GetCommand(8)["id"], GetCommand(9)["name"], GetCommand(9)["id"]),
+                inline = False
                 )
             
-            await interaction.response.send_message(embed=embed, view=view, ephemeral=True)
+            await interaction.response.send_message(embed = embed, view = view)
         elif command == 'help':
             embed = discord.Embed(
                 title='Перелік всіх команд та категорій',
@@ -395,7 +396,7 @@ class Information(commands.Cog):
                 inline=False
             )
             await interaction.response.send_message(embed=embed, ephemeral=True)
-        elif command == 'Economy':
+        elif command == 'Ranking':
             embed = discord.Embed(
                 title='Доступні команди категорії 💰Економіка',
                 description=f'Ви можете отримати детальну інформацію для кожної команди, викликавши її за допомогою {config["bot_prefix"]}help `<command:назва команди чи категорї>`',
@@ -416,64 +417,72 @@ class Information(commands.Cog):
                     
             await interaction.response.send_message(embed=embed, ephemeral=True)
         else:
-            await interaction.response.send_message(embed=discord.Embed(title='Помилка', description=f'Такої команди чи категорії немає!\nПерегляньте команди за допомгою: {config["bot_prefix"]}help', color=0xff0000), ephemeral=True)
+            await interaction.response.send_message(embed = discord.Embed(title = GetMsg("error_general_title", interaction.guild), description = GetMsg("error_missing_command_or_category").format(GetCommand(0)["name"], GetCommand(0)["id"]), color = config["color_error"]))
     
     @help.autocomplete("command")
     async def help_autocomplete(self, interaction: discord.Interaction, current: str) -> typing.List[app_commands.Choice[str]]:
-        data = []
-        for command_choice in ['help', 'info', 'stats', 'server', 'user', 'bio']:
-            if current.lower() in command_choice.lower():
-                data.append(app_commands.Choice(name=command_choice, value=command_choice))
-        return data    
+        
+        names = [command['name'] for command in config.get('bot_commands', {}).values()]
+        
+        names.sort()
+
+        if len(names) > 25:
+            names = random.sample(names, 25)
+        
+        command = names
+        
+        return [
+            app_commands.Choice(name = command, value = command)
+            for command in command if current.lower() in command.lower()
+        ]   
     
-    @app_commands.command(name='info', description=f'Корисна інформація про {config["bot_name"]}')
+    @app_commands.command(name = 'info', description = GetMsg("command_help_information_info_descriptions").format(config['bot_name']))
     async def info_(self, interaction: discord.Interaction):
         for row in cur.execute(f'SELECT commands FROM stats_bot'):
             StBcommands = row[0]
         embed = discord.Embed(
-            title=config["bot_name"],
-            description=f'Привіт, я Ґанью секретарка Цісін в Ліюе. Моє завдання допомагати мандрівникам освоюватися з дивовижним світом Тейват\n\nМій префікс `{config["bot_prefix"]}`. Якщо ти хочеш дізнатися всі мої команди тоді можеш скористатися **{config["bot_prefix"]}help**. Або скористайся **{config["bot_prefix"]}starjour**, щоб розпочати свою подорож<a:ganyuroll:1037043774850867241>',
-            color=StrToColor(config['color_default'])
+            title = config["bot_name"],
+            description = GetMsg("command_info_embed_descriptions", interaction.guild).format(GetCommand(0)["name"], GetCommand(0)["id"], GetCommand(10)["name"], GetCommand(10)["id"],),
+            color = StrToColor(config['color_default'])
         )
         
-        embed.set_thumbnail(url=config["bot_icon"])
+        embed.set_thumbnail(url = config["bot_icon"])
         embed.set_footer(
-            text='Mops Storage © 2020-2022 Всі права захищено • https://mops-storage.xyz',
-            icon_url=config["bot_icon"]
+            text = GetMsg("footer_copyright_with_link", interaction.guild).format(datetime.datetime.now().year, config["dev"]["site"]),
+            icon_url = config["bot_icon"]
         )
         
         embed.add_field(
-            name='Збірка:',
-            value=f'{config["bot_version"]} (<t:1666194420:d>)'
+            name = GetMsg("command_info_bot_build", interaction.guild),
+            value = '{0} (<t:{1}:d>)'.format(config["bot_version"], config["bot_last_updated"])
         )
         embed.add_field(
-            name='Мій розробник:',
-            value='<:dev:1037048854190772295> [Indi Mops#0424](https://discord.com/users/734082410504781854)'
+            name = GetMsg("command_info_bot_developer", interaction.guild),
+            value = '{0} [{1}](https://discord.com/users/{2})'.format(config["dev"]["emoji"], config["dev"]["name"], config["dev"]["id"])
+        )
+        # This empty field is needed to align all the fields, or if you ever have additional information, you can add it here
+        embed.add_field(
+            name = '⠀',
+            value = '⠀'
         )
         embed.add_field(
-            name='⠀',
-            value='⠀'
+            name = GetMsg("command_info_links", interaction.guild),
+            value = GetMsg("command_info_links_text1", interaction.guild).format(config["bot_site"], config["other_links"]["support_server"])
         )
         embed.add_field(
-            name='Корисні посилання:',
-            value=f'[Веб-сайт]({config["bot_site"]})\n[Сервер підтримки]({config["other_links"]["support_server"]})'
+            name = '⠀',
+            value = GetMsg("command_info_links_text2").format(config["other_links"]["github_repo"], config["other_links"]["top.gg"])
         )
         embed.add_field(
-            name='⠀',
-            value=f'[GitHub репозиторій]({config["other_links"]["github_repo"]})\n[top.gg]({config["other_links"]["top.gg"]})'
+            name = '⠀',
+            value = '[Patreon]({0})\n[Diaka]({1})'.format(config["other_links"]["patreon"], config["other_links"]["diaka"])
         )
-        embed.add_field(
-            name='⠀',
-            value=f'[Patreon]({config["other_links"]["patreon"]})\n[Diaka]({config["other_links"]["diaka"]})'
-        )
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed = embed)
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
         data.commit()
     
-    @app_commands.command(name='stats', description=f'Статистика {config["bot_name"]}')
+    @app_commands.command(name = 'stats', description = GetMsg("command_help_information_stats_descriptions").format(config["bot_name"]))
     async def stats_(self, interaction: discord.Interaction):
-        """Перевіряє чи працює Cog система"""
-        ctx = await self.bot.get_context(interaction)
         ping = self.bot.latency
         for row in cur.execute(f'SELECT guilds, users, channels, commands FROM stats_bot'):
             StBguilds = row[0]
@@ -482,133 +491,171 @@ class Information(commands.Cog):
             StBcommands = row[3]
           
         embed = discord.Embed(
-            title=f'Статистика {config["bot_name"]}',
-            color=StrToColor(config['color_default'])
+            title = GetMsg("command_stats_embed_title", interaction.guild).format(config["bot_name"]),
+            color = StrToColor(config['color_default'])
             )
-        embed.set_thumbnail(url=config["bot_icon"])
+        embed.set_thumbnail(url = config["bot_icon"])
         embed.set_footer(
-            text='Mops Storage © 2020-2022 Всі права захищено • https://mops-storage.xyz',
-            icon_url=config["bot_icon"]
+            text = GetMsg("footer_copyright_with_link", interaction.guild).format(datetime.datetime.now().year, config["dev"]["site"]),
+            icon_url = config["bot_icon"]
         )
         
         embed.add_field(
-            name='Основна',
-            value=f'Сервери: {"{0:,}".format(StBguilds).replace(",", " ")}\nКористувачів: {"{0:,}".format(StBusers).replace(",", " ")}\nКаналів: {"{0:,}".format(StBchannels).replace(",", " ")}'
+            name = GetMsg("command_stats_general_title", interaction.guild),
+            value = GetMsg("command_stats_general_descriptions", interaction.guild).format("{0:,}".format(StBguilds).replace(",", " "), "{0:,}".format(StBusers).replace(",", " "), "{0:,}".format(StBchannels).replace(",", " "))
         )
         embed.add_field( 
-            name='Платформена',
-            value=f'Команд використано: {"{0:,}".format(StBcommands + 1).replace(",", " ")}\nЗатримка: {round(ping, 2)} мс.\nЗапущений: <t:{start_time}:R>'
+            name = GetMsg("command_stats_platform_title", interaction.guild),
+            value = GetMsg("command_stats_platform_descriptions", interaction.guild).format("{0:,}".format(StBcommands + 1).replace(",", " "), int(ping * 1000), start_time)
         )
         
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed = embed)
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
         data.commit()
     
-    @app_commands.command(name='server', description='Детальна інформація про сервер')
+    @app_commands.command(name = 'server', description = GetMsg("command_help_information_server_descriptions"))
     async def server_(self, interaction: discord.Interaction):
         for row in cur.execute(f'SELECT commands FROM stats_bot'):
             StBcommands = row[0]
         
-        ctx = await self.bot.get_context(interaction)
-        text_channels = len(ctx.guild.text_channels)
-        voice_channels = len(ctx.guild.voice_channels)
-        stage_channels = len(ctx.guild.stage_channels)
+        
+        text_channels = len(interaction.guild.text_channels)
+        voice_channels = len(interaction.guild.voice_channels)
+        stage_channels = len(interaction.guild.stage_channels)
         total_channels = text_channels + voice_channels + stage_channels
         
-        total = len(ctx.guild.members)
-        online = len(list(filter(lambda m: str(m.status) == "online", ctx.guild.members)))
-        idle = len(list(filter(lambda m: str(m.status) == "idle", ctx.guild.members)))
-        dnd = len(list(filter(lambda m: str(m.status) == "dnd", ctx.guild.members)))
-        offline = len(list(filter(lambda m: str(m.status) == "offline", ctx.guild.members)))
-        humans = len(list(filter(lambda m: not m.bot, ctx.guild.members)))
-        bots = len(list(filter(lambda m: m.bot, ctx.guild.members)))
+        total = len(interaction.guild.members)
+        online = len(list(filter(lambda m: str(m.status) == "online", interaction.guild.members)))
+        idle = len(list(filter(lambda m: str(m.status) == "idle", interaction.guild.members)))
+        offline = len(list(filter(lambda m: str(m.status) == "offline", interaction.guild.members)))
+        humans = len(list(filter(lambda m: not m.bot, interaction.guild.members)))
+        bots = len(list(filter(lambda m: m.bot, interaction.guild.members)))
         
-        snsfwlvl = str(ctx.guild.explicit_content_filter)
+        snsfwlvl = str(interaction.guild.explicit_content_filter)
         if snsfwlvl == "all_members":
-            snsfwlvl = "Перевіряти кожного учасника"
+            snsfwlvl = GetMsg("command_server_content_filter_all", interaction.guild)
         elif snsfwlvl == "no_role":
-            snsfwlvl = "Перевіряти учасників без ролей"
+            snsfwlvl = GetMsg("command_server_content_filter_no_role", interaction.guild)
         elif snsfwlvl == "disabled":
-            snsfwlvl = "Не встановлено"
+            snsfwlvl = GetMsg("command_server_content_filter_disabled", interaction.guild)
         else:
-            snsfwlvl = "Не знайдено"
+            snsfwlvl = GetMsg("command_server_content_filter_not_found", interaction.guild)
         
         embed = discord.Embed(
-            color = StrToColor(config['color_default']),
-            title = f"Інформація про сервер {ctx.guild.name}"
+            title = GetMsg("command_server_embed_title", interaction.guild).format(interaction.guild.name),
+            color = StrToColor(config['color_default'])
         )
         
-        schannel_rules = str(ctx.guild.rules_channel)
+        schannel_rules = str(interaction.guild.rules_channel)
         if schannel_rules == "None":
-            schannel_rules = "Немає"
+            schannel_rules = GetMsg("command_server_channel_rules_none", interaction.guild)
         else:
-            schannel_rules = f"<#{ctx.guild.rules_channel.id}>"
+            schannel_rules = f"<#{interaction.guild.rules_channel.id}>"
         
-        sverification = str(ctx.guild.verification_level)
+        sverification = str(interaction.guild.verification_level)
         if sverification == "extreme":
-            sverification = "Найвищий"
+            sverification = GetMsg("command_server_verification_level_extreme", interaction.guild)
         elif sverification == "high":
-            sverification = "Високий"
+            sverification = GetMsg("command_server_verification_level_high", interaction.guild)
         elif sverification == "medium":
-            sverification = "Середній"
+            sverification = GetMsg("command_server_verification_level_medium", interaction.guild)
         elif sverification == "low":
-            sverification = "Низький"
+            sverification = GetMsg("command_server_verification_level_low", interaction.guild)
         elif sverification == "none":
-            sverification = "Не встановлений"
+            sverification = GetMsg("command_server_verification_level_none", interaction.guild)
         else:
-            sverification = "Не знайдено"
+            sverification = GetMsg("command_server_verification_level_not_found", interaction.guild)
         
-        created_at = ctx.guild.created_at
+        def GetChannelCount(key:str, my_tuple: tuple = interaction.guild.channels):
+            """
+            Returns the value of the key key in the dictionary, which contains the number of channels of each type.
+            :param key: - The key whose value is to be returned. Can be 'TotalChannels' or channel type. Example: TotalChannels, TextChannel, CategoryChannel, VoiceChannel, ForumChannel'
+            :param my_tuple: - Tuple with channel objects.
+            :return: - The value of the key in the channels_count dictionary.
+            """
+            channels_count = {"TotalChannels": 0}
+
+            for obj in my_tuple:
+                obj_type = type(obj).__name__
+
+                if obj_type in channels_count:
+                    channels_count[obj_type] += 1
+                else:
+                    channels_count[obj_type] = 1
+
+                if obj_type != "CategoryChannel":
+                    channels_count["TotalChannels"] += 1
+
+            # Перевірте, чи ключ існує в словнику
+            if key in channels_count:
+                return channels_count[key]
+            else:
+                return None
+
+        
+        created_at = interaction.guild.created_at
         embed.add_field(
-            name = "Власник сервера", 
-            value = ctx.guild.owner.mention,
+            name = GetMsg("command_server_owner", interaction.guild), 
+            value = interaction.guild.owner.mention,
             inline = True
             )
+        
         embed.add_field(
-            name = "Id", 
-            value = ctx.guild.id, 
+            name = "ID", 
+            value = interaction.guild.id, 
             inline = True
             )
+        
         embed.add_field(
-            name = "Створений: ", 
+            name = GetMsg("command_server_created", interaction.guild), 
             value = f'<t:{int(created_at.timestamp())}:f>', 
             inline = True
             )
+        
         embed.add_field(
-            name = "Канал з правилами:",
+            name = GetMsg("command_server_channel_rules", interaction.guild),
             value = schannel_rules,
-            inline = True)
+            inline = True
+            )
+        
         embed.add_field(
-            name = "Перевірка:", 
+            name = GetMsg("command_server_content_filter", interaction.guild), 
             value = snsfwlvl,
             inline = True
             )
+        
         embed.add_field(
-            name = "Рівень модерації:",
+            name = GetMsg("command_server_verification_level", interaction.guild),
             value = sverification,
-            inline = True)
-        embed.add_field(
-            name = "Учасники:", 
-            value = f'<:total_members:1038376493669154836> Всього: **{total}**\n<:members:1038376476870979594> Учасників: **{humans}**\n<:bots:1038376472521482263> Ботів: **{bots}**',
             inline = True
             )
+        
         embed.add_field(
-            name = "Статуси:", 
-            value = f"<:online:1038376483758030898>Онлайн: **{online}**\n<:idle:1038376474958381056>Відійшли: **{idle}**\n<:ofline:1038376481774120970>Не в мережі: **{offline}**", 
+            name = GetMsg("command_server_members", interaction.guild), 
+            value = GetMsg("command_server_members_value", interaction.guild).format(total, humans, bots),
             inline = True
             )
+        
         embed.add_field(
-            name = "Канали:", 
-            value = f"<:total_channels:1038376491576205375> Всього: **{total_channels}**\n<:text_channels:1038376489399357504> Текстові: **{text_channels}**\n<:voice_channels:1038376495414001724> Голосові: **{voice_channels}**"
+            name = GetMsg("command_server_status", interaction.guild), 
+            value = GetMsg("command_server_status_value").format(online, idle, offline), 
+            inline = True
             )
         
-        embed.set_thumbnail(url = ctx.guild.icon)
+        embed.add_field(
+            name = GetMsg("command_server_channels", interaction.guild), 
+            value = GetMsg("command_server_channels_value", interaction.guild).format(GetChannelCount("TotalChannels"), GetChannelCount("TextChannel"), GetChannelCount("VoiceChannel"))
+            )
         
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        embed.set_thumbnail(url = interaction.guild.icon)
+        
+        
+        
+        await interaction.response.send_message(embed = embed)
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
         data.commit()
 
-    @app_commands.command(name='user', description=f'Детальна інформація про користувача')
+    @app_commands.command(name = 'user', description = GetMsg("command_help_information_user_descriptions"))
     async def user_(self, interaction: discord.Interaction, *, user: discord.Member = None,):
         for row in cur.execute(f'SELECT commands FROM stats_bot'):
             StBcommands = row[0]
@@ -618,9 +665,9 @@ class Information(commands.Cog):
             
         for bio in cur.execute(f'SELECT bio FROM users WHERE id = {user.id}'):
             if bio[0] == 'None':
-                bio = f"Ви можете додати сюди якусь інформацію про себе. Скориставшись `{config['bot_prefix']}bio`"
+                bio = GetMsg("", interaction.guild).format(GetCommand(5), GetCommand(5))
         headers = {"Authorization": f"Bot {config['bot_token']}"}
-        req = requests.get(f"https://discord.com/api/v9/users/{user.id}", headers=headers).json()
+        req = requests.get(f"https://discord.com/api/v9/users/{user.id}", headers = headers).json()
         
         def rgb(hex):
             rgb = []
@@ -628,24 +675,25 @@ class Information(commands.Cog):
                 decimal = int(hex[i:i+2], 16)
                 rgb.append(decimal)
             return rgb
+        
         bio = bio[0]
         cut = (bio[:150] + '...') if len(bio) > 150 else bio
         
         if req['banner_color'] is None:
-            embed = discord.Embed(description=cut, color=StrToColor(config['color_default']))
+            embed = discord.Embed(description = cut, color = StrToColor(config['color_default']))
         else:
-            embed = discord.Embed(description=cut, color=discord.Color.from_rgb(rgb(req['banner_color'].replace('#', ''))[0], rgb(req['banner_color'].replace('#', ''))[1], rgb(req['banner_color'].replace('#', ''))[2]))
+            embed = discord.Embed(description = cut, color = discord.Color.from_rgb(rgb(req['banner_color'].replace('#', ''))[0], rgb(req['banner_color'].replace('#', ''))[1], rgb(req['banner_color'].replace('#', ''))[2]))
         
         #global user_status
         user_status = interaction.guild.get_member(user.id).status
         if user_status == discord.Status.online:
-            user_status = "<:online:1038376483758030898>В мережі"
+            user_status = GetMsg("command_user_user_online", interaction.guild)
         elif user_status == discord.Status.offline or user_status == discord.Status.invisible:
-            user_status = "<:ofline:1038376481774120970>Не в мережі"
+            user_status = GetMsg("command_user_user_offline", interaction.guild)
         elif user_status == discord.Status.idle:
-            user_status = "<:idle:1038376474958381056>Відійшов"
+            user_status = GetMsg("command_user_user_idle", interaction.guild)
         elif user_status == discord.Status.dnd or user_status == discord.Status.do_not_disturb:
-            user_status = "<:dnd:1048546187487227914>Не турбувати"
+            user_status = GetMsg("command_user_user_dnd", interaction.guild)
 
         global ca, spotify, game
         ca = ''
@@ -675,13 +723,11 @@ class Information(commands.Cog):
                     if self.bot.get_emoji(ca_emoji_id) == None:
                         ca = ''
                     else:
-                        ca = f'**Користувацький статус**: {ca_emoji}\n'
+                        ca = GetMsg("command_user_custom_status_emoji", interaction.guild).format(ca_emoji)
                 else:
-                    ca = f'**Користувацький статус:** {ca_emoji}{ca_name}\n'
+                    ca = GetMsg("command_user_custom_status", interaction.guild).format(ca_emoji, ca_name)
 
             if isinstance(active, discord.Spotify):
-                print(active.title)
-                print(active.artist)
                 artist = active.artist
                 if len(artist.split('; ')) > 1:
                     artist = artist.split('; ')
@@ -690,301 +736,148 @@ class Information(commands.Cog):
                     artist = artist.replace(' ', '_')
                     artist = f'[{active.artist}](https://open.spotify.com/search/{artist})'
                         
-                spotify = f'**Слухає:** <:spotify:1049105195906379837> [{active.title}](https://open.spotify.com/track/{active.track_id}) - {artist}\n'
+                spotify = GetMsg("command_user_status_spotify", interaction.guild).format(active.title, active.track_id, artist)
             
             if isinstance(active, discord.Game):
-                game = f'**Грає в:** {active.name}\n'
+                game = GetMsg("", interaction.guild).format(active.name)
         
         nick = ''
-        if user.nick is None:
-            pass
-        else:
-            nick = f'**Ім\'я на сервері:** {user.nick}\n'
+        if user.nick is not None:
+            nick = GetMsg("command_user_nickname", interaction.guild).format(user.nick)
           
         embed.add_field(
-            name='Основна інформація',
-            value=f'**Ім\'я користувача:** {user.name}#{user.discriminator}\n{nick}**Статус:** {user_status}\n{ca}{spotify}{game}**Приєднаввся:** <t:{int(user.joined_at.timestamp())}:D> (<t:{int(user.joined_at.timestamp())}:R>)\n**Зареєструвався:** <t:{int(user.created_at.timestamp())}:D> (<t:{int(user.created_at.timestamp())}:R>)'
+            name = GetMsg("command_user_main_category", interaction.guild),
+            value = GetMsg("command_user_main_category_text", interaction.guild).format(user.name, nick, user_status, ca, spotify, game, int(user.joined_at.timestamp()), int(user.created_at.timestamp()))
         )
         
         embed.set_author(
-            name=f'Інформація про {user.name}',
-            icon_url=user.avatar
+            name = GetMsg("command_user_subtitle", interaction.guild).format(user.name),
+            icon_url = user.avatar
         )
         
         embed.set_thumbnail(
-            url=user.avatar
+            url = user.avatar
         )
         
         if req['banner'] is None:
-            pass
+            embed.set_image(
+                url = config["bot_banner"]
+            )
         else:
             embed.set_image(
-            url=f'https://cdn.discordapp.com/banners/{user.id}/{req["banner"]}?size=2048'
+            url = f'https://cdn.discordapp.com/banners/{user.id}/{req["banner"]}?size=2048'
         )
         
         embed.set_footer(
-            text=f'ID: {user.id}'
+            text = 'ID: {0}'.format(user.id)
         )
         
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed = embed, ephemeral = True)
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
         data.commit()  
 
-    @app_commands.command(name='bio', description='Встановити інформацію про себе')
-    async def bio_(self, interaction: discord.Interaction, user: discord.Member = None, bio: str = None):
+    # create group for bio commands
+    bio_commands = app_commands.Group(name = 'bio', description = "Group bio commands")
+    
+    @bio_commands.command(name = "view", description = GetMsg("command_bio_view_description"))
+    async def bio_view(self, interaction: discord.Interaction, user: discord.User = None):
         for row in cur.execute(f'SELECT commands FROM stats_bot'):
             StBcommands = row[0]
         
         if user is None:
-            user = interaction.user
-            for row in cur.execute(f'SELECT bio FROM users WHERE id = {user.id}'):
-                db_bio = row[0]
-            if bio is None:# returns bio author
-                if db_bio == 'None':# check bio in BD
-                    embed = discord.Embed(
-                        title='Помилка!',
-                        description=f'Ви ще нічого не вписали про себе!\nДетальніше про команду: `{config["bot_prefix"]}help bio`',
-                        color=0xff0000
-                    )
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
-                else:
-                    if user.nick is None:
-                        name = user.name
-                    else:
-                        name = user.nick
-                    embed = discord.Embed(
-                        title=f'Біографія {name}',
-                        description=db_bio,
-                        color=StrToColor(config['color_default'])
-                    )
-                    
-                    embed.set_thumbnail(
-                        url=user.avatar
-                    )
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
-            elif bio == '-':
-                cur.execute(f'UPDATE users SET bio = "None" WHERE id = {user.id}')
-                    
-                embed = discord.Embed(
-                    title='Біографія оновленна',
-                    description='Ви прибрали свою біографію',
-                    color=StrToColor(config['color_default'])
-                )
-                embed.set_thumbnail(
-                    url=user.avatar
-                )
-                    
-                await interaction.response.send_message(embed=embed, ephemeral=True)
-            else:
-                cur.execute(f'UPDATE users SET bio = "{bio}" WHERE id = {user.id}')
-                data.commit
-                embed = discord.Embed(
-                    title='Біографія оновленна',
-                    description=f'Ви оновили свою біографію на:\n*{bio}*',
-                    color=StrToColor(config['color_default'])
-                )
-                embed.set_thumbnail(
-                    url=user.avatar
-                )
-                await interaction.response.send_message(embed=embed, ephemeral=True)
-        elif user.id != interaction.user.id:
-            if interaction.user.id != 734082410504781854:
-                embed = discord.Embed(
-                    title='Помилка',
-                    description='У тебе немає прав для редагування біографій користувачів',
-                    color=0xff0000
-                )
-                await interaction.response.send_message(embed=embed, ephemeral=True)
-                print(interaction.user.id)
-            else:
-                if bio is None:
-                    embed = discord.Embed(
-                        title='Помилка',
-                        description=f'Ти забув ввести біографію користувача\nДетальніше про команду: `{config["bot_prefix"]}help bio`',
-                        color=0xff0000
-                    )
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
-                elif bio == '-':
-                    cur.execute(f'UPDATE users SET bio = "None" WHERE id = {user.id}')
-                    data.commit
-                    embed = discord.Embed(
-                        title='Біографія оновленна',
-                        description=f'Ви прибрали біографію користувача **{user.name}**',
-                        color=StrToColor(config['color_default'])
-                    )
-                    
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
-                else:
-                    cur.execute(f'UPDATE users SET bio = "{bio}" WHERE id = {user.id}')
-                    embed = discord.Embed(
-                        title='Біографія оновленна',
-                        description=f'Ви оновили біографію користувача {user.name} на:\n*{bio}*',
-                        color=StrToColor(config['color_default'])
-                    )
-                    
-                    await interaction.response.send_message(embed=embed, ephemeral=True)
-        elif user.id == interaction.user.id and bio is None:
-            embed = discord.Embed(
-                    title='Помилка',
-                    description=f'Для чого стільки букв, якщо можна використати просто `{config["bot_prefix"]}bio`',
-                    color=0xff0000
-            )
-            await interaction.response.send_message(embed=embed, ephemeral=True)
+            user = interaction.user # set target user what send command
+            
+        # get bio from DB
+        for row in cur.execute(f'SELECT bio FROM users WHERE id = {user.id}'):
+            db_bio = row[0]
         
+        # if bio is not in DB, return hint
+        if db_bio == 'None':
+            embed = discord.Embed(
+                title = GetMsg("error_general_title", interaction.guild),
+                description = GetMsg("command_bio_not_found_bio", interaction.guild).format(GetCommand(0)["name"], GetCommand(0)["id"]),
+                color = StrToColor(config['color_error'])
+            )
+            await interaction.response.send_message(embed = embed, ephemeral = True)
+        else:
+            # Checking whether user has a nickname in server
+            if user.nick is None:
+                name = user.name
+            else:
+                name = user.nick
+
+            embed = discord.Embed(
+                title = GetMsg("command_bio_embed_title", interaction.guild).format(name),
+                description = db_bio,
+                color = StrToColor(config['color_default'])
+            )
+                    
+            embed.set_thumbnail(
+                url = user.avatar
+            )
+            await interaction.response.send_message(embed = embed, ephemeral = True)
+        # where command has completed
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
         data.commit()
     
     
-    @app_commands.command(name='question', description=f'Запитай {config["bot_name"]} будь що')
-    async def question_(self, interaction: discord.Interaction, question: str):
-        ctx = await self.bot.get_context(interaction)
-        await interaction.response.defer()
-        answer = Chat(question)
-        
+    @bio_commands.command(name = "set", description = GetMsg("command_bio_set_description"))
+    async def bio_set(self, interaction: discord.Interaction, text: str):
         for row in cur.execute(f'SELECT commands FROM stats_bot'):
             StBcommands = row[0]
+        
+        for row in cur.execute(f'SELECT bio FROM users WHERE id = {interaction.user.id}'):
+            bio = row[0]
+        
+        cur.execute(f'UPDATE users SET bio = "{text}" WHERE id = {interaction.user.id}')
+        data.commit
+        
+        if bio == "None" or bio is None:
+            description = GetMsg("command_bio_set_embed_description_none", interaction.guild).format(text)
+        else:
+            description = GetMsg("command_bio_set_embed_description", interaction.guild).format(text)
         
         embed = discord.Embed(
-            title = 'Відповідь на твоє питання',
-            color = StrToColor(config['color_default']),
-            description = answer
-            )
-        embed.set_thumbnail(url=config["bot_icon"])
-        embed.set_footer(
-            text=f'Mops Storage © 2020-{datetime.datetime.now().year} Всі права захищено • https://mops-storage.xyz',
-            icon_url=config["bot_icon"]
+            title = GetMsg("command_bio_set_embed_title", interaction.guild),
+            description = description,
+            color = StrToColor(config['color_ok'])
         )
+        embed.set_thumbnail(
+            url = interaction.user.avatar
+        )
+        await interaction.response.send_message(embed = embed, ephemeral = True)
         
-        #await asyncio.sleep(5)
-        #await interaction.response.send_message(embed=embed, ephemeral=True)
-        await asyncio.sleep(delay=0)
-        await interaction.followup.send(embed=embed, ephemeral=True)
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
         data.commit()
-
     
-    async def user_info_callback(self, interaction: discord.Interaction, user: discord.User):
+    
+    @bio_commands.command(name = "reset", description = GetMsg("command_bio_reset_description"))
+    async def bio_reset(self, interaction: discord.Interaction):
         for row in cur.execute(f'SELECT commands FROM stats_bot'):
             StBcommands = row[0]
-        
-        ctx = await self.bot.get_context(interaction)
-        
-        if user is None:
-            user = ctx.author
             
-        for bio in cur.execute(f'SELECT bio FROM users WHERE id = {user.id}'):
-            if bio[0] == 'None':
-                bio = f"Ви можете додати сюди якусь інформацію про себе. Скориставшись `{config['bot_prefix']}bio`"
-        headers = {"Authorization": f"Bot {config['bot_token']}"}
-        req = requests.get(f"https://discord.com/api/v9/users/{user.id}", headers=headers).json()
-        
-        def rgb(hex):
-            rgb = []
-            for i in (0, 2, 4):
-                decimal = int(hex[i:i+2], 16)
-                rgb.append(decimal)
-            return rgb
-        
-        if req['banner_color'] is None:
-            embed = discord.Embed(description=bio[0], color=StrToColor(config['color_default']))
-        else:
-            embed = discord.Embed(description=bio[0], color=discord.Color.from_rgb(rgb(req['banner_color'].replace('#', ''))[0], rgb(req['banner_color'].replace('#', ''))[1], rgb(req['banner_color'].replace('#', ''))[2]))
-        
-        #global user_status
-        user_status = interaction.guild.get_member(user.id).status
-        if user_status == discord.Status.online:
-            user_status = "<:online:1038376483758030898>В мережі"
-        elif user_status == discord.Status.offline or user_status == discord.Status.invisible:
-            user_status = "<:ofline:1038376481774120970>Не в мережі"
-        elif user_status == discord.Status.idle:
-            user_status = "<:idle:1038376474958381056>Відійшов"
-        elif user_status == discord.Status.dnd or user_status == discord.Status.do_not_disturb:
-            user_status = "<:dnd:1048546187487227914>Не турбувати"
-
-        
-        
-        global ca, spotify, game
-        ca = ''
-        spotify = ''
-        game = ''
-        for active in interaction.guild.get_member(user.id).activities:
-            if isinstance(active, discord.CustomActivity):
-                global ca_emoji_type, ca_emoji_id
-                ca_emoji_type = ''
-                ca_emoji_id = ''
-                if active.emoji is None: # Checks whether the user status is emoji
-                    pass
-                else:
-                    if active.emoji.animated is True: # Checks whether emoji is animated
-                        ca_emoji_type = 'a'
-                    ca_emoji_name = active.emoji.name
-                    ca_emoji_id = active.emoji.id
-                ca_name = active.name
-                global ca_emoji
-                ca_emoji = None
-                if self.bot.get_emoji(ca_emoji_id) == None:# Can a bot to reflect that emoji
-                    ca_emoji = ''
-                else:
-                    ca_emoji =  f'<{ca_emoji_type}:{ca_emoji_name}:{ca_emoji_id}>'
-
-                if ca_name is None:
-                    if self.bot.get_emoji(ca_emoji_id) == None:
-                        ca = ''
-                    else:
-                        ca = f'**Користувацький статус**: {ca_emoji}\n'
-                else:
-                    ca = f'**Користувацький статус:** {ca_emoji}{ca_name}\n'
-
-            if isinstance(active, discord.Spotify):
-                print(active.title)
-                print(active.artist)
-                artist = active.artist
-                if len(artist.split('; ')) > 1:
-                    artist = artist.split('; ')
-                    artist = ", ".join(artist)
-                else:
-                    artist = artist.replace(' ', '_')
-                    artist = f'[{active.artist}](https://open.spotify.com/search/{artist})'
-                        
-                spotify = f'**Listen:** <:spotify:1049105195906379837> [{active.title}](https://open.spotify.com/track/{active.track_id}) - {artist}\n'
-            
-            if isinstance(active, discord.Game):
-                game = f'**Грає в:** {active.name}\n'
-        
-        nick = ''
-        if user.nick is None:
-            pass
-        else:
-            nick = f'**Ім\'я на сервері:** {user.nick}\n'
-          
-        embed.add_field(
-            name='Основна інформація',
-            value=f'**Ім\'я користувача:** {user.name}#{user.discriminator}\n{nick}**Статус:** {user_status}\n{ca}{spotify}{game}**Приєднаввся:** <t:{int(user.joined_at.timestamp())}:D> (<t:{int(user.joined_at.timestamp())}:R>)\n**Зареєструвався:** <t:{int(user.created_at.timestamp())}:D> (<t:{int(user.created_at.timestamp())}:R>)'
-        )
-        
-        embed.set_author(
-            name=f'Інформація про {user.name}',
-            icon_url=user.avatar
-        )
-        
-        embed.set_thumbnail(
-            url=user.avatar
-        )
-        
-        if req['banner'] is None:
-            pass
-        else:
-            embed.set_image(
-            url=f'https://cdn.discordapp.com/banners/{user.id}/{req["banner"]}?size=2048'
-        )
-        
-        embed.set_footer(
-            text=f'ID: {user.id}'
-        )
-        
-        await interaction.response.send_message(embed=embed, ephemeral=True)
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
-        data.commit()
+        
+        try: 
+            cur.execute(f'UPDATE users SET bio = Null WHERE id = {interaction.user.id}')
+            
+            embed = discord.Embed(
+                title = GetMsg("success_title", interaction.guild),
+                description = GetMsg("command_bio_reset_embed_description", interaction.guild),
+                color = StrToColor(config["color_ok"])
+            )
+            
+            await interaction.response.send_message(embed = embed, ephemeral = True)
+        except Exception as e:
+            embed = discord.Embed(
+                title = GetMsg("error_general_title", interaction.guild),
+                description = GetMsg("error_command_general_description", interaction.guild),
+                color = StrToColor(config["color_error"])
+            )
+            await interaction.response.send_message(embed = embed, ephemeral = True)
+            print(GetMsg("error_command_general_description_console").format(interaction.guild.name, interaction.guild.id, e))
+            
+        data.commit
 
 async def setup(bot):
     await bot.add_cog(Information(bot))

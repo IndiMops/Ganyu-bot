@@ -40,7 +40,7 @@ class Economy(commands.Cog, name='Економічні команди'):
     async def on_ready(self):
         print('Economy commands - Ready!')# Виводить, коли гвинтик готовий до роботи
         for guild in self.bot.guilds:
-            print(f'Свервер {guild.name} під  id {guild.id} - знайдено')
+            print(f'Сервер {guild.name} під  id {guild.id} - знайдено')
             for member in guild.members:
                 cur.execute(f"SELECT id FROM users where id={member.id}")
                 if cur.fetchone() == None:
@@ -51,7 +51,7 @@ class Economy(commands.Cog, name='Економічні команди'):
 
     @commands.Cog.listener()
     async def on_memmber_join(self, member):
-        """Додання користувача до БД, який зашов на сервер
+        """Додання користувача до БД, який зайшов на сервер
         ---
         Args:
             member (dist): Спиок, в якому міститься дані користувача, котрі пізніше будуть додані до БД

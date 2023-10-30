@@ -1,5 +1,6 @@
-discord.py
-asyncio
-easy_pil
-flask
-flask-sqlalchemy
+discord.py==2.3.0
+easy_pil==0.1.5
+Flask==2.2.2
+flask_sqlalchemy==3.1.1
+openai==0.27.0
+Requests==2.31.0

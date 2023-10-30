@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 import discord
 from discord.ext import commands, tasks
-from discord.ui import Select, View, Button
+from discord.interactions import Interaction
+from discord.ui import Select, View, Button, Modal
 from discord import ui
 from discord import app_commands
 import sqlite3
 import requests
 from os import listdir
 from ganyu import *
+import typing
+import asyncio
 
 
 data = sqlite3.connect('data.sqlite')#connect to BD
@@ -21,15 +24,12 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
     """
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-    
+        
+    """
     @commands.Cog.listener()
     async def on_ready(self):
         print('Test commands - Ready!')# Виводить, коли гвинтик готовий до роботи
-    
-    @tasks.loop(seconds=10)
-    async def sync(self, ctx) -> None:
-        fmt = await ctx.bot.tree.sync()
-        print(f'Dev_commands: Синхронізовано {fmt} слеш-команд')
+    """
     
     @commands.command()
     @commands.is_owner()
@@ -52,21 +52,27 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
         invite = await guild.text_channels[0].create_invite(max_age=0, max_uses=0, temporary=False)
         await ctx.send(invite)
 
-    @commands.command()
+    @app_commands.command(name = "button")
     @commands.is_owner()
-    async def button(self, ctx):
+    async def button(self, interaction: discord.Interaction):
         button = Button(
-            label='Url',
-            style=discord.ButtonStyle.url,
-            url='https://mops-storage.xyz'
+            label = 'Url',
+            style = discord.ButtonStyle.url,
+            url = 'https://mops-storage.xyz'
         )
         button1 = Button(
-            label='Button',
-            style=discord.ButtonStyle.primary
+            label = 'Button',
+            style = discord.ButtonStyle.primary
         )
         
         async def button_call_back(interaction:discord.Integration):
-            await interaction.response.send_message(embed=discord.Embed(title='Hello', color=StrToColor(config["color_default"])), ephemeral=True)
+            await interaction.response.send_message(
+                embed = discord.Embed(
+                    title='Hello',
+                    color=StrToColor(config["color_default"])
+                ),
+                ephemeral = True
+            )
         
         button1.callback = button_call_back
         
@@ -74,7 +80,10 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
         view.add_item(button)
         view.add_item(button1)
         
-        await ctx.send(view=view)
+        await interaction.response.send_message(view = view)
+        
+    
+    
     
     @commands.command()
     @commands.is_owner()
@@ -91,10 +100,7 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
                 color=0xff0000
             )
             await ctx.reply(embed=embed)
-    
-    @app_commands.command(name='slash', description='This test slash command')
-    async def slash(self, interaction:discord.Integration, arg: str):
-        await interaction.response.send_message(content='Command work', ephemeral=True)
+            
     
     @commands.command()
     @commands.is_owner()
@@ -186,13 +192,22 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
         cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
         data.commit()
     """
-
+    
     @commands.command()
     async def get_user(self, ctx, user: discord.Member):
             headers = {"Authorization": f"Bot {config['bot_token']}"}
             req = requests.get(f"https://discord.com/api/v9/users/{user.id}", headers=headers).json()
             await ctx.reply(req)
 
+    @app_commands.command(name = "atach", description = "Save a photo")
+    async def save_photo(self, interaction: discord.Interaction, image: discord.Attachment):
+        if image.content_type in ["image/npg", "image/jpg", "image/jpeg", "image/gif"]:
+            image_url = (lambda url: url.split('?')[0])(image.url)
+            await interaction.response.send_message(embed = discord.Embed(description = "This is image {0}".format(image_url)).set_image(url = image_url), ephemeral = True)
+        else:
+            await interaction.response.send_message('This is a different type of file.', ephemeral=True)
+
+    
     @app_commands.command(name='nick', description='Змінна нікнейму')
     async def nick(self, interaction: discord.Interaction, user: discord.Member, nick: str):
         await user.edit(nick=nick)
@@ -203,6 +218,49 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
         #ctx = await self.bot.get_context(interaction)
         
         await interaction.response.send_message(content=f'Вигнато користувача {channel} {user.name} за причиною:\n`{reason}`')
+
+
+    
+    
+    @app_commands.command(name = 'modal', description = 'test modal')
+    async def test_modal(self, interaction: discord.Interaction):
+        class TestModal(Modal, title = 'Test Moda'):
+            fb_title = ui.TextInput(
+                style = discord.TextStyle.short,
+                label = "Title",
+                required = False,
+                placeholder = "Enter your title here"
+            )
+            
+            message = ui.TextInput(
+                style = discord.TextStyle.long,
+                label = "Mesage",
+                required = False,
+                max_length = 1024,
+                placeholder = "Enter your message here"
+            )
+            
+            async def on_submit(self, interaction: discord.Interaction):
+                embed = discord.Embed(
+                    title = "Новий відгук",
+                    description = self.message.value,
+                    color = StrToColor(config["color_deafult"])
+                )
+                
+                embed.set_author(
+                    name = interaction.user.name,
+                    url = "https://discord.com/users/{0}".format(interaction.user.id),
+                    icon_url = interaction.user.avatar.url
+                )
+                channel = interaction.guild
+                await owner.send(embed = embed)
+                await interaction.response.send_message("Дякую за ваш відгук", ephemeral = True)
+                
+            async def on_error(self, interaction: discord.Interaction, error):
+                await interaction.response.send_message("Error: {0}".format(error), ephemeral = True)
+            
+        modal = TestModal()
+        await interaction.response.send_modal(modal)
 
 # Error callback
     @sync.error
@@ -258,6 +316,15 @@ class Test_Commands(commands.Cog, name='Команди розробника'):
     @app_commands.command(name='test_locale', description='Check locale settings')
     async def test_locale_(self, interaction: discord.Interaction):
         await interaction.response.send_message(GetMsg('test_locale', interaction.guild))
+""" 
+    group = app_commands.Group(name='menu', description='our menu')
+
+    @group.command(name="coffee") 
+    async def my_sub_command(self, interaction: discord.Interaction):
+        await interaction.response.send_message("Coffee", ephemeral=True)
+        
+"""
+    
     
 async def setup(bot):
     await bot.add_cog(Test_Commands(bot))

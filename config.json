@@ -1,30 +1,75 @@
 {
     "bot_name": "Ganyu",
     "bot_token": "TOKEN",
-    "bot_prefix": ".",
+    "bot_prefix": "/",
     "bot_locale": "uk",
     "color_default": "#809dd5",
     "color_ok": "#41e332",
     "color_warn": "#FFCC4D",
     "color_error": "#DD2E44",
     "bot_site": "https://indmops.pythonanywhere.com",
-    "bot_icon": "https://media.discordapp.net/attachments/939569454390603837/1034701808993579008/GenshinImpact_Ganyu_Liyue.jpg",
+    "bot_icon": "https://media.discordapp.net/attachments/939569454390603837/1160313074067197982/avatar_bot.jpg",
+    "bot_banner": "https://media.discordapp.net/attachments/939569454390603837/1161753510153564180/smesnc9xp6y81.jpg",
     "bot_version": "2.1.0",
-    "chat_gpt": {
-        "api_key": "API_KEY",
-        "model": "gpt-3.5-turbo",
-        "max_token_limit": 2048,
-        "model_self": "You are Ganyu. A helper bot that helps beginners and skilled adventure seekers and explore the world of Teiwat. Teiwat is a fictional world in Genshin Impact and Ganyu is Liyue Qixing's secretary."
-    },
+    "bot_last_updated": "1666194420",
     "other_links": {
         "support_server": "https://discord.gg/ZZ94ZN42",
         "top.gg": "https://top.gg/bot/938580973057093702",
         "github_repo": "https://github.com/IndiMops/Ganyu-bot",
         "patreon": "https://www.patreon.com/indi_mops",
-        "diaka": "https://indi-mops.diaka.ua/donate"
+        "diaka": "https://indi-mops.diaka.ua/donate",
+        "crowdir": "https://crowdin.com/project/ganyu-discord-bot/"
     },
     "dev": {
-        "name": "Indi Mops#0424",
-        "id": "734082410504781854"
+        "name": "Indi Mops",
+        "id": "734082410504781854",
+        "emoji": "<:dev:1037048854190772295>",
+        "site": "https://indimops.github.io/"
+    },
+    "bot_commands": {
+        "0": {
+            "name": "help",
+            "id": "1038517599832649808"
+        },
+        "1": {
+            "name": "info",
+            "id": "1040321120538202162"
+        },
+        "2": {
+            "name": "stats",
+            "id": "1040563750996025424"
+        },
+        "3": {
+            "name": "server",
+            "id": "1040563750996025425"
+        },
+        "4": {
+            "name": "user",
+            "id": "1048302400953397298"
+        },
+        "5": {
+            "name": "bio view",
+            "id": "1050497877547438175"
+        },
+        "6": {
+            "name": "card",
+            "id": "1051133495960936539"
+        },
+        "7": {
+            "name": "set_xp",
+            "id": "1051151205964988507"
+        },
+        "8": {
+            "name": "set_lvl",
+            "id": "1051165773374165125"
+        },
+        "9": {
+            "name": "leaderboard",
+            "id": "1051165516150087750"
+        },
+        "10": {
+            "name": "starjour",
+            "id": null
+        }
     }
 }

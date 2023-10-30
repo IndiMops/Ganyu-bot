@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import discord
-from discord.ext import commands, tasks
+from discord.ext import commands
+from discord import app_commands
 import asyncio
 import os
 import logging
@@ -8,8 +9,8 @@ from time import strftime
 from time import gmtime
 import sqlite3
 import random
-from discord import app_commands
 from ganyu import *
+from importlib import reload
 
 bot = commands.Bot(commands.when_mentioned_or('.'), intents = discord.Intents.all())
 bot.remove_command('help')
@@ -21,8 +22,14 @@ config = LoadJson("config.json")# load config
 
 @bot.event
 async def on_ready():
-    print(GetMsg("bot_on_ready").format(config["bot_name"]))
+    print(f'{config["bot_name"]} підключився до Discord.')
     
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as error:
+        print(error)
+        
     data = sqlite3.connect('data.sqlite')#connect to BD
     cur = data.cursor()
     cur.execute("""CREATE TABLE IF NOT EXISTS stats_bot (
@@ -33,6 +40,15 @@ async def on_ready():
         )""")
     data.commit()
     bot.loop.create_task(ch_pr())
+
+@bot.event
+async def on_guild_join(guild):
+    print(f'Bot joined the guild: {guild.name} (id: {guild.id})')
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} command(s)")
+    except Exception as error:
+        print(error)
 
 async def up_db():
         """Оновлює статистику бота кожні 30 секунд
@@ -56,11 +72,6 @@ async def up_db():
         await asyncio.sleep(60)
     
 
-async def sync():
-    """Synchronization of slash commands"""
-    fmt = await bot.tree.sync()
-    print(GetMsg("bot_cync_command_cmd")).format(len(fmt))
-    await asyncio.sleep(10)
 
 async def ch_pr():
     await bot.wait_until_ready()
@@ -75,7 +86,6 @@ async def ch_pr():
         # print(GetMsg("debug_status")).format(config["bot_name"], status)
         await asyncio.sleep(30)
         
-        bot.loop.create_task(sync())
         bot.loop.create_task(up_db())
 
 
@@ -85,30 +95,30 @@ async def on_command_error(ctx, error):
         cooldown = int(error.retry_after)
         cool = 0
         if cooldown < 60:
-            cool = strftime(GetMsg("seconds"), gmtime(cooldown))
+            cool = strftime(GetMsg("cooldown_duration_seconds"), gmtime(cooldown))
         elif 60 < cooldown < 3600:
-            cool = strftime(GetMsg("minutes"), gmtime(cooldown))
+            cool = strftime(GetMsg("cooldown_duration_minutes"), gmtime(cooldown))
         elif 3600 < cooldown < 86400:
-            cool = strftime(GetMsg("hours"), gmtime(cooldown))
+            cool = strftime(GetMsg("cooldown_duration_hours"), gmtime(cooldown))
         elif 86400 < cooldown < 604800 or cooldown > 604800:
-            cool = strftime(GetMsg("days"), gmtime(cooldown))
+            cool = strftime(GetMsg("cooldown_duration_days"), gmtime(cooldown))
                     
         embed = discord.Embed(
-            title=GetMsg("title_error"),
-            description=GetMsg("desc_cooldown_command").format(cool),
-            color=StrToColor(config['color_error'])
+            title = GetMsg("error_general_title"),
+            description = GetMsg("error_cooldown_desc").format(cool),
+            color = StrToColor(config['color_error'])
         )
         await ctx.reply(embed=embed)
         print(error)
     
     if isinstance(error, commands.CommandNotFound):
         embed = discord.Embed(
-            title=GetMsg("title_error"),
-            description=GetMsg("desc_command_not_found").format(config["bot_prefix"]),
-            color=StrToColor(config['color_error'])
+            title = GetMsg("error_general_title"),
+            description = GetMsg("error_command_not_found_desc").format(config["bot_prefix"]),
+            color = StrToColor(config['color_error'])
         )
         
-        await ctx.reply(embed=embed)
+        await ctx.reply(embed = embed)
         print(error)
 
 @bot.event
@@ -117,7 +127,7 @@ async def on_command_completion(ctx):
             StBcommands = row[0]
     cur.execute(f'UPDATE stats_bot SET commands = {StBcommands + 1} ')
     data.commit()
-    #print(f'\nВиконалась команда\nВсього виконано: {StBcommands + 1}\n')
+    #print(f'\nВиконалась команда\nВсього виконано: {StBcommands + 1}\n')# Output of how many commands were executed in the bot
 
 async def load_extensions():
     """Load cogs for main file
