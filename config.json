@@ -1,0 +1,79 @@
+{
+    "bot": {
+        "name": "Ganyu",
+        "prefix": ".",
+        "locale": "uk",
+        "color": {
+            "default": "#809dd5",
+            "ok": "#41e332",
+            "warn": "#FFCC4D",
+            "error": "#DD2E44"
+        },
+        "site": "https://indmops.pythonanywhere.com",
+        "icon": "https://cdn.discordapp.com/avatars/938580973057093702/a_8787786008f9793c4ce766c3bde513cd.gif?size=1024",
+        "banner": "https://cdn.discordapp.com/banners/938580973057093702/a_0190637f7f6f056047d028205c098078.gif?size=1024",
+        "version": "0.0.1",
+        "last_updated": "1666194420"
+    },
+    "dev": {
+        "name": "Indi Mops",
+        "id": "734082410504781854",
+        "emoji": "<:dev:1037048854190772295>",
+        "site": "https://indimops.github.io/"
+    },
+    "loging": {
+        "log_file_path": "discord.log",
+        "log_leveling": "INFO"
+    },
+    "venv_path": "venv",
+    "bot_commands": {
+        "0": {
+            "name": "sync",
+            "id": "1264035646163517484"
+        },
+        "1": {
+            "name": "test",
+            "id": "1264037030036246528"
+        },
+        "2": {
+            "name": "ping",
+            "id": "1264037030036246529"
+        },
+        "3": {
+            "name": "get_user",
+            "id": "1264711630495809576"
+        },
+        "4": {
+            "name": "help",
+            "id": "1264711630495809577"
+        },
+        "5": {
+            "name": "test_ui",
+            "id": "1265245724166193254"
+        },
+        "6": {
+            "name": "kick",
+            "id": "1265336083663683615"
+        },
+        "7": {
+            "name": "ban",
+            "id": "1269359591897038998"
+        },
+        "8": {
+            "name": "ban_list",
+            "id": "1269364466689249302"
+        },
+        "9": {
+            "name": "unban",
+            "id": "1269364466689249303"
+        },
+        "10": {
+            "name": "mute",
+            "id": "1269369174782902383"
+        },
+        "11": {
+            "name": "unmute",
+            "id": "1269374629454024877"
+        }
+    }
+}
