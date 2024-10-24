@@ -18,7 +18,7 @@ class HelpCommand(commands.Cog):
         
     @app_commands.command(name="help", description="Показує довідкове повідомлення з усіма командами та категоріями")
     async def help(self, interaction: discord.Interaction, command: str = None, category: str = None):
-        if command is None or category is None:
+        if command is None and category is None:
             menu = Select(
                 placeholder="Виберіть категорію...",
                 options=[
@@ -140,8 +140,73 @@ class HelpCommand(commands.Cog):
             )
             
             await interaction.response.send_message(embed = embed, view = view, ephemeral = True)
-        
-
-
+        elif command and category:
+            embed = discord.Embed(
+                title = "Помилка",
+                description="Вибачте, але ви не можете використовувати обидва параметри одночасно. Будь ласка, використовуйте лише один параметр.",
+                color=HexToColor(config["bot"]["color"]["error"])
+            )
+            embed.set_thumbnail(url = config["bot"]["icon"])
+            embed.set_footer(
+                text = "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}".format(curent_year = datetime.now().year, dev_site_url = config["bot"]["site"]),
+                icon_url = config["bot"]["icon"]
+            )
+            
+            await interaction.response.send_message(embed = embed, ephemeral = True)
+        elif command == "help":
+            embed = discord.Embed(
+                title = "Перелік всіх команд та категорій",
+                description = "Показує всі доступні команди та категорії бота",
+                color=HexToColor(config["bot"]["color"]["default"])
+            )
+            
+            embed.set_author(
+                name = "Команда \"{0}\"".format(GetCommand(4)["name"])
+            )
+            embed.add_field(
+                name = "Використання",
+                value = "\"</{0}:{1}>\" `<command: назва команди>|<category: назва категорії>`".format(GetCommand(4)["name"], GetCommand(4)["id"]),
+                inline = False
+            )
+            embed.add_field(
+                name = "Приклад 1",
+                value = "</{0}:{1}>\n┗Показує весь список команд".format(GetCommand(4)["name"], GetCommand(4)["id"]),
+                inline = False
+            )
+            embed.add_field(
+                name = "Приклад 2",
+                value = "</{0}:{1}> `<category:Information>`\n┗Показує всі доступні команди категорії **📃Інформація**".format(GetCommand(4)["name"], GetCommand(4)["id"]),
+                inline=False
+            )
+            embed.add_field(
+                name='Приклад 3',
+                value = "</{0}:{1}> `<command:help>`\n┗Показує детальну інформацію про команду </{2}:{3}> (*Ви зараз переглядаєте її*)".format(GetCommand(4)["name"], GetCommand(4)["id"], GetCommand(4)["name"], GetCommand(4)["id"])
+            )
+            embed.add_field(
+                name='⠀',
+                value='Примітка: в трикутних дужках відображається назва параметра, а після двох крапок те, що він приймає.',
+                inline=False
+            )
+            
+            embed.set_thumbnail(url = config["bot"]["icon"])
+            embed.set_footer(
+                text = "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}".format(curent_year = datetime.now().year, dev_site_url = config["bot"]["site"]),
+                icon_url = config["bot"]["icon"]
+            )
+            
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+        else:
+            embed = discord.Embed(
+                title = "Попередження",
+                description="Виниклая якась помилка, або такої команди немає чи її довідка ще не реалізована. Приносимо вибачення.",
+                color=HexToColor(config["bot"]["color"]["warn"])
+            )
+            embed.set_thumbnail(url = config["bot"]["icon"])
+            embed.set_footer(
+                text = "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}".format(curent_year = datetime.now().year, dev_site_url = config["bot"]["site"]),
+                icon_url = config["bot"]["icon"]
+            )
+            
+            await interaction.response.send_message(embed=embed, ephemeral=True)
 async def setup(bot):
     await bot.add_cog(HelpCommand(bot))
