@@ -13,12 +13,20 @@
         "icon": "https://cdn.discordapp.com/avatars/938580973057093702/a_8787786008f9793c4ce766c3bde513cd.gif?size=1024",
         "banner": "https://cdn.discordapp.com/banners/938580973057093702/a_0190637f7f6f056047d028205c098078.gif?size=1024",
         "version": "0.0.1",
-        "last_updated": "1666194420"
+        "last_updated": "1729792980",
+        "other_links": {
+            "support_server": "https://discord.gg/ZZ94ZN42",
+            "top.gg": "https://top.gg/bot/938580973057093702",
+            "github_repo": "https://github.com/IndiMops/Ganyu-bot",
+            "patreon": "https://www.patreon.com/indi_mops",
+            "diaka": "https://indi-mops.diaka.ua/donate",
+            "crowdin": "https://crowdin.com/project/ganyu-discord-bot/"
+        }
     },
     "dev": {
         "name": "Indi Mops",
         "id": "734082410504781854",
-        "emoji": "<:dev:1037048854190772295>",
+        "emoji": "<:dev:1299068185290735618>",
         "site": "https://indimops.github.io/"
     },
     "loging": {
@@ -74,6 +82,10 @@
         "11": {
             "name": "unmute",
             "id": "1269374629454024877"
+        },
+        "12": {
+            "name": "info",
+            "id": "1299065942881603742"
         }
     }
 }
