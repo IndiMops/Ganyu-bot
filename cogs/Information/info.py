@@ -16,24 +16,24 @@ class InfoCommand(commands.Cog):
     async def info_(self, interaction: discord.Interaction):
         embed = discord.Embed(
             title = config["bot"]["name"],
-            description = "Привіт, я Ґанью секретар Цісін в Ліюе. Моє завдання допомагати мандрівникам освоюватися з дивовижним світом Тейват\n\nЯ використовую слеш-команди, тому тепер я стала ще більш зручним ботом. Якщо ти хочеш дізнатися всі мої команди тоді можеш скористатися </{0}:{1}>. Або скористайся </{2}:{3}>, щоб розпочати свою подорож{4}".format(GetCommand(4)["name"], GetCommand(4)["id"], "journey", "1264024444454371144", "<a:ganyuroll:1265243572500955197>"),
+            description = GetMsg("commands.info.embed.description", interaction.guild).format(command_help_name = GetCommand(4)["name"], command_help_id = GetCommand(4)["id"], command_journey_name = "journey", command_journey_id = "1264024444454371144", emoji_ganyu_roll = "<a:ganyuroll:1265243572500955197>"),
             color = HexToColor(config["bot"]["color"]["default"]),
         )
         
         embed.set_thumbnail(url = config["bot"]["icon"])
         embed.set_footer(
-            text = "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}".format(curent_year = datetime.now().year, dev_site_url = config["bot"]["site"]),
+            text = GetMsg("general.embed.footer", interaction.guild).format(curent_year = datetime.now().year, dev_site_url = config["bot"]["site"]),
             icon_url = config["bot"]["icon"]
         )
         # TODO: Add function to grab the last updated date of the bot from GitHub repository release  
         embed.add_field(
-            name = "Збірка:",
-            value= "{0} (<t:{1}:d>)".format(config["bot"]["version"], config["bot"]["last_updated"]),
+            name = GetMsg("commands.info.fields.name.build", interaction.guild),
+            value = GetMsg("commands.info.fields.value.build", interaction.guild).format(bot_version = config["bot"]["version"], last_update_Unix_time = config["bot"]["last_updated"]),
         )
         
         embed.add_field(
-            name = "Мій розробник:",
-            value = "{0} [{1}](https://discord.com/users/{2})".format(config["dev"]["emoji"], config["dev"]["name"], config["dev"]["id"]),
+            name = GetMsg("commands.info.fields.name.dev", interaction.guild),
+            value = GetMsg("commands.info.fields.value.dev", interaction.guild).format(dev_emoji = config["dev"]["emoji"], dev_name = config["dev"]["name"], dev_id = config["dev"]["id"]),
         )
         
         # This empty field is needed to align all the fields, or if you ever have additional information, you can add it here
@@ -43,13 +43,13 @@ class InfoCommand(commands.Cog):
         )
         
         embed.add_field(
-            name = "Корисні посилання:",
-            value = "[Веб-сайт]({0})\n[Сервер підтримки]({1})".format(config["bot"]["site"], config["bot"]["other_links"]["support_server"]),
+            name = GetMsg("commands.info.fields.name.link1", interaction.guild),
+            value = GetMsg("commands.info.fields.value.link1").format(bot_site_url = config["bot"]["site"], bot_support_server_url = config["bot"]["other_links"]["support_server"]),
         )
         
         embed.add_field(
             name = "⠀",
-            value = "[GitHub репозиторій]({0})\n[top.gg]({1})".format(config["bot"]["other_links"]["github_repo"], config["bot"]["other_links"]["top.gg"]),
+            value = GetMsg("commands.info.fields.value.link2").format(bot_github_url = config["bot"]["other_links"]["github_repo"], bot_top_gg_url = config["bot"]["other_links"]["top.gg"]),
         )
         
         embed.add_field(

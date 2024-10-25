@@ -66,48 +66,32 @@ def GuildLocaleGet(guild: Guild) -> str:
     """
     config = LoadJson("config.json")
     try:
-        locale = config["bot_locale"]
+        locale = config["bot"]["locale"]
         #locale = GuildConfGet(guild, "locale")
     except KeyError:
-        return config["bot_locale"]
-    return locale or config["bot_locale"]
+        return config["bot"]["locale"]
+    return locale or config["bot"]["locale"]
 
 
-def GetMsg(string: str, guild: Union[Guild, None] = None) -> str:
-    """
-    Retrieves a localized message string based on the provided key and guild context.
-
-    Args:
-        string (str): The key for the localized message string.
-        guild (Union[Guild, None], optional): The guild context used to determine the locale. 
-                                               If None, the default bot locale is used. Defaults to None.
-
-    Returns:
-        str: The localized message string corresponding to the provided key. 
-             If an error occurs or the key is not found, returns the key itself.
-
-    Raises:
-        Exception: If there is an issue loading the locale files or retrieving the message.
-
-    Example:
-        >>> GetMsg("welcome_message")
-        "Welcome to the server!"
-
-    Notes:
-        - This function loads locale data from JSON files based on the bot's or guild's locale.
-        - The locale JSON files should be in the 'locale' directory with names matching the locale codes.
-    """
+def GetMsg(key: str, guild: Union[Guild, None] = None) -> str:
     try:
         lang = LoadJson("config.json")
-        if guild is None:
-            locale = LoadJson(f'locale/{lang["bot_locale"]}.json')
-        else:
-            locale = LoadJson(f'locale/{GuildLocaleGet(guild)}.json')
-        return locale["messages"][string]
+    
+        locale = (
+            LoadJson(f'locale/{lang["bot"]["locale"]}.json')
+            if guild is None
+            else LoadJson(f'locale/{GuildLocaleGet(guild)}.json')
+        )
+        keys = key.split('.')
+        
+        msg = locale
+        for k in keys:
+            msg = msg[k]
+
+        return msg
     except Exception as exp:
-        print(
-            f"Could not get locale string named {string} due to exception {exp}", guild)
-        return string
+        print(f"Could not get locale string for key '{key}' due to exception {exp}")
+        return key
 
 
 def HexToColor(hex_string: str) -> int:
