@@ -1,0 +1,33 @@
+{
+    "general": {
+        "locale_name": "Українська",
+        "embed": {
+            "footer": "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}"
+        }
+    },
+    "errors": {},
+    "commands": {
+        "info": {
+            "embed": {
+                "description": "Привіт, я Ґанью секретар Цісін із Ліюе. Моє завдання допомагати мандрівникам освоюватися з дивовижним світом Тейват\n\nЯ використовую слеш-команди, тому тепер я стала ще більш зручним ботом. Якщо ти хочеш дізнатися всі мої команди тоді можеш скористатися </{command_help_name}:{command_help_id}>. Або скористайся </{command_journey_name}:{command_journey_id}>, щоб розпочати свою подорож{emoji_ganyu_roll}"
+            },
+            "fields": {
+                "name": {
+                    "build": "Збірка:",
+                    "dev": "Мій розробник:",
+                    "link1": "Корисні посилання:"
+                },
+                "value": {
+                    "build": "{bot_version} (<t:{last_update_Unix_time}:d>)",
+                    "dev": "{dev_emoji} [{dev_name}](https://discord.com/users/{dev_id})",
+                    "link1": "[Вебсайт]({bot_site_url})\n[Сервер підтримки]({bot_support_server_url})",
+                    "link2": "[GitHub репозиторій]({bot_github_url})\n[top.gg]({bot_top_gg_url})"
+                }
+            }
+        }
+    },
+    "bot_status": {
+        "bot_first_status": "{0}help | v{1}",
+        "bot_second_status": "за {0} користувачами"
+    }
+}
