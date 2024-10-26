@@ -20,10 +20,10 @@ class BanCommand(commands.Cog):
     @app_commands.describe(delete_message="Видалити повідомлення учасника за останні дні(1 = 1 день).")
     @app_commands.checks.has_permissions(ban_members=True)
     async def ban(self, interaction: discord.Interaction, member: discord.Member, reason: Optional[str], delete_message: Optional[int]):
-        ban_reason = "{administrator_name} видав бан {kiked_member} з причиною: {reason}.".format(
+        ban_reason = GetMsg("commands.ban.ban_reason.if_reason_exists", interaction.guild).format(
             administrator_name=interaction.user.name,
-            kiked_member=member.name,
-            reason=reason if reason else "Причина не надана"
+            baned_member=member.name,
+            reason=reason if reason else GetMsg("commands.ban.ban_reason.no_reason")
         )
 
         if delete_message is None:
@@ -32,36 +32,36 @@ class BanCommand(commands.Cog):
             await member.ban(reason=ban_reason, delete_message_days=delete_message)
         
         embed = discord.Embed(
-            title="Учасник був забанений!",
-            description="Ви забанили учасника",
-            color=HexToColor(config["bot"]["color"]["ok"])
+            title = GetMsg("commands.ban.embed.administrator.title", interaction.guild),
+            description = GetMsg("commands.ban.embed.administrator.description", interaction.guild),
+            color = HexToColor(config["bot"]["color"]["ok"])
         )
         embed.set_author(
-            name=member.name,
-            url="https://discord.com/users/{member_id}".format(member_id=member.id),
-            icon_url=member.avatar.url if member.avatar else discord.Embed.Empty
+            name = member.name,
+            url = "https://discord.com/users/{member_id}".format(member_id = member.id),
+            icon_url = member.avatar.url if member.avatar else discord.Embed.Empty
         )
         embed.set_footer(
-            text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
-                curent_year=datetime.now().year,
-                developer_site_url=config["dev"]["site"]
+            text = GetMsg("general.embed.footer").format(
+                curent_year = datetime.now().year,
+                dev_site_url = config["dev"]["site"]
             ),
             icon_url=config["bot"]["icon"]
         )
             
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed = embed, ephemeral = True)
             
         # The message of the punished member
-        reason = "Причина не була наданна" if reason is None else reason
-        embed=discord.Embed(
-            title="Ви були забананені!",
-            description="Ви отримали бан на сервері: `{guild_name}`\nАдмінстратор, що видав бан: {administrator_name}.\nПричина: ```{reason_ban}```".format(guild_name=interaction.guild.name, administrator_name=interaction.user.name, reason_ban=reason),
-            color=HexToColor(config["bot"]["color"]["default"])
+        reason = GetMsg("commands.ban.ban_reason.no_reason", interaction.guild) if reason is None else reason
+        embed = discord.Embed(
+            title = GetMsg("commands.ban.embed.DM_member.title", interaction.guild),
+            description = GetMsg("commands.ban.embed.DM_member.description").format(guild_name = interaction.guild.name, administrator_name = interaction.user.name, reason_ban = reason),
+            color = HexToColor(config["bot"]["color"]["default"])
         )
         embed.set_footer(
-            text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
+            text = GetMsg("general.embed.footer", interaction.guild).format(
                 curent_year=datetime.now().year,
-                developer_site_url=config["dev"]["site"]
+                dev_site_url=config["dev"]["site"]
             ),
             icon_url=config["bot"]["icon"]
         )
@@ -77,17 +77,17 @@ class BanCommand(commands.Cog):
         if isinstance(error, app_commands.MissingPermissions):
             await interaction.response.send_message(
                 embed = discord.Embed(
-                    title="Помилка!",
-                    description="У вас не достатьо прав для використання цієї команди.",
+                    title = GetMsg("errors.general.error", interaction.guild) + "!",
+                    description = GetMsg("errors.general.missing_permissions", interaction.guild),
                     color=HexToColor(config["bot"]["color"]["error"]),
                 ).set_footer(
-                    text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
+                    text = GetMsg("general.embed.footer", interaction.guild).format(
                         curent_year=datetime.now().year,
-                        developer_site_url=config["dev"]["site"]
+                        dev_site_url=config["dev"]["site"]
                     ),
                     icon_url=config["bot"]["icon"]
                 ),
-                ephemeral=True
+                ephemeral = True
             )
 
         

@@ -5,7 +5,13 @@
             "footer": "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}"
         }
     },
-    "errors": {},
+    "errors": {
+        "general": {
+            "error": "Помилка",
+            "missing_permissions": "У вас не достатньо прав для використання цієї команди."
+        },
+        "commands": {}
+    },
     "commands": {
         "info": {
             "embed": {
@@ -24,10 +30,30 @@
                     "link2": "[GitHub репозиторій]({bot_github_url})\n[top.gg]({bot_top_gg_url})"
                 }
             }
+        },
+        "ban_list": {
+            "embed": {
+                "title": "Список забанених користувачів сервера {server_name}",
+                "overrun_members": "Кількість забанених користувачів перевищує 10. Ось список у вигляді файлу:",
+                "descriptions_no_baned_members": "На сервері немає забанених користувачів{emoji}",
+                "ban_reason": "**Причина**: `{ban_reason}`"
+            }
+        },
+        "ban": {
+            "embed": {
+                "administrator": {
+                    "title": "Учасник був забанений!",
+                    "description": "Ви забанили учасника."
+                },
+                "DM_member": {
+                    "title": "Ви були забананені!",
+                    "description": "Ви отримали бан на сервері: `{guild_name}`\nАдмінстратор, що видав бан: {administrator_name}.\nПричина: ```{reason_ban}```"
+                }
+            },
+            "ban_reason": {
+                "if_reason_exists": "{administrator_name} видав бан {baned_member} з причиною: {reason}.",
+                "no_reason": "Причина не була надана"
+            }
         }
-    },
-    "bot_status": {
-        "bot_first_status": "{0}help | v{1}",
-        "bot_second_status": "за {0} користувачами"
     }
 }
