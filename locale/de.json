@@ -1,9 +1,9 @@
 {
     "general": {
-        "locale_name": "Українська",
         "embed": {
             "footer": "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}"
-        }
+        },
+        "locale_name ": "Українська"
     },
     "errors": {
         "general": {
