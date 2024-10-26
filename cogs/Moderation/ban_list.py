@@ -33,49 +33,48 @@ class BanListCommand(commands.Cog):
             }
             for index, entry in enumerate(bans)
         }
-        
-          
+            
         if len(bans_list) > 10:
             json_data = json.dumps(bans_list, indent=4, ensure_ascii=False)
             file = discord.File(io.BytesIO(json_data.encode()), filename=f"{interaction.guild.id}|bans_list.json")
-            return await interaction.response.send_message("Кількість забанених користувачів перевищує 10. Ось список у вигляді файлу:", file=file, ephemeral=True)
+            return await interaction.response.send_message(content = GetMsg("commands.ban_list.embed.overrun_members", interaction.guild), file=file, ephemeral=True)
         elif len(bans_list) == 0:
             embed = discord.Embed(
-                title="Список забанених користувачів сервера {server_name}".format(
-                    server_name=interaction.guild.name
-                ),
-                description="На сервері немає забанених<:ganyudizzy:1265243411540082798>"
+                title = GetMsg("commands.ban_list.embed.title", interaction.guild).format(server_name = interaction.guild.name),
+                description = GetMsg("commands.ban_list.embed.descriptions_no_baned_members", interaction.guild).format(emoji = "<:ganyudizzy:1265243411540082798>"),
+                color = HexToColor(config["bot"]["color"]["default"]),
             )
+            embed.set_thumbnail(url = config["bot"]["icon"])
             embed.set_footer(
-                text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
+                text = GetMsg("general.embed.footer", interaction.guild).format(
                     curent_year=datetime.now().year,
-                    developer_site_url=config["dev"]["site"]
+                    dev_site_url=config["dev"]["site"]
                 ),
                 icon_url=config["bot"]["icon"]
             )
-            
+                
             return await interaction.response.send_message(embed=embed, ephemeral=True)
         else:
             embed = discord.Embed(
-                title="Список забанених користувачів сервера {server_name}".format(server_name=interaction.guild.name),
+                title = GetMsg("commands.ban_list.embed.title", interaction.guild).format(server_name=interaction.guild.name),
                 color=HexToColor(config["bot"]["color"]["default"])
             )
-            
+                
             embed.set_footer(
-                text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
+                text = GetMsg("general.embed.footer", interaction.guild).format(
                     curent_year=datetime.now().year,
-                    developer_site_url=config["dev"]["site"]
+                    dev_site_url=config["dev"]["site"]
                 ),
                 icon_url=config["bot"]["icon"]
             )
             embed.set_thumbnail(url=interaction.guild.icon)
-            
+                
             for key, ban in bans_list.items():
                 user_info = ban["user"]
                 embed.add_field(
-                    name="{user_name} (ID: `{user_id}`)".format(user_name=user_info["name"], user_id=user_info["id"]),
-                    value='**Причина**: `{ban_reason}`'.format(ban_reason=ban["reason"]),
-                    inline=False
+                    name = "{user_name} (ID: `{user_id}`)".format(user_name=user_info["name"], user_id=user_info["id"]),
+                    value = GetMsg("commands.ban_list.embed.ban_reason", interaction.guild).format(ban_reason=ban["reason"]),
+                    inline = False
                 )
             return await interaction.response.send_message(embed=embed, ephemeral=True)
         
@@ -85,16 +84,16 @@ class BanListCommand(commands.Cog):
         if isinstance(error, app_commands.MissingPermissions):
             await interaction.response.send_message(
                 embed = discord.Embed(
-                    title="Помилка!",
-                    description="У вас не достатньо прав для використання цієї команди.",
+                    title = GetMsg("errors.general.error", interaction.guild) + "!",
+                    description = GetMsg("errors.general.missing_permissions", interaction.guild),
                     color=HexToColor(config["bot"]["color"]["error"]),
                 ).set_footer(
-                    text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
+                    text = GetMsg("general.embed.footer", interaction.guild).format(
                         curent_year=datetime.now().year,
-                        developer_site_url=config["dev"]["site"]
+                        dev_site_url=config["dev"]["site"]
                     ),
                     icon_url=config["bot"]["icon"]
-                ),
+                ).set_thumbnail(url=config["bot"]["icon"]),
                 ephemeral=True
             )
     
