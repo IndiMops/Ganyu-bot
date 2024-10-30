@@ -1,8 +1,23 @@
 {
     "general": {
         "locale_name": "Українська",
+        "none": "Немає",
         "embed": {
             "footer": "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}"
+        },
+        "nsfw_filters": {
+            "all": "Перевіряти кожного учасника",
+            "without_role": "Перевіряти учасників без ролей",
+            "disabled": "Не встановлено",
+            "not_found": "Не знайдено"
+        },
+        "verification_level": {
+            "extreme": "Найвищий",
+            "high": "Високий",
+            "medium": "Середній",
+            "low": "Низький",
+            "none": "Не встановлено",
+            "not_found": "Не знайдено"
         }
     },
     "errors": {
@@ -53,6 +68,28 @@
             "ban_reason": {
                 "if_reason_exists": "{administrator_name} видав бан {baned_member} з причиною: {reason}.",
                 "no_reason": "Причина не була надана"
+            }
+        },
+        "server": {
+            "embed": {
+                "title": "Інформація про сервер {server_name}"
+            },
+            "fields": {
+                "name": {
+                    "server_owner": "Власник сервера",
+                    "create_at": "Створений",
+                    "сhannel_rules": "Канал з правилами",
+                    "nsfw_filter": "Перевірка на NSFW",
+                    "verification_level": "Рівень модерації",
+                    "members": "Учасники",
+                    "status": "Статуси",
+                    "channels": "Канали"
+                },
+                "value": {
+                    "members": "{emoji_total_members} Всього: **{total_members}**\n{emoji_members} Учасників: **{members}**\n{emoji_bots} Ботів: **{bots}**",
+                    "status": "{emoji_online}Онлайн: **{online}**\n{emoji_idle}Відійшли: **{idle}**\n{emoji_offline}Не в мережі: **{offline}**",
+                    "channels": "{emoji_total_channels} Всього: **{total_channels}**\n{emoji_text_channels} Текстові: **{text_channels}**\n{emoji_voice_channels} Голосові: **{voice_channels}**"
+                }
             }
         }
     }
