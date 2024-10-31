@@ -1,11 +1,10 @@
 import discord
 
-from discord import app_commands, utils
+from discord import app_commands
 from discord.ext import commands
 from ganyu_utils import *
-from humanfriendly import parse_timespan, format_timespan, InvalidTimespan
 from typing import Optional
-from datetime import datetime, timedelta
+from datetime import datetime
 
 config = LoadJson("config.json")
 
@@ -15,44 +14,44 @@ class UnmuteCommand(commands.Cog):
         self.bot = bot
         
     
-    @app_commands.command(name="unmute", description="Зняти мут із учасника.")
-    @app_commands.describe(member="Учасник, якому знімиться мут.")
-    @app_commands.describe(reason="Причина через яку знімається мут.")
+    @app_commands.command(name = "unmute", description = GetMsg("commands.unmute.description"))
+    @app_commands.describe(member = GetMsg("commands.unmute.describe.member"))
+    @app_commands.describe(reason = GetMsg("commands.unmute.describe.reason"))
     @app_commands.checks.has_permissions(deafen_members=True)
     async def unmute(self, interaction: discord.Interaction, member: discord.Member, reason: Optional[str]):
         if not member.is_timed_out():
             embed = discord.Embed(
-                title="Помилка!",
-                description="На даний момент учасник не має мут.",
-                color=HexToColor(config["bot"]["color"]["error"])
+                title = f"{GetMsg("errors.general.error", interaction.guild.name)}!",
+                description = GetMsg("errors.general.user_not_have_mute", interaction.guild.name),
+                color = HexToColor(config["bot"]["color"]["error"])
             )
             embed.set_footer(
-                text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
-                    curent_year=datetime.now().year,
-                    developer_site_url=config["dev"]["site"]
+                text = GetMsg("general.embed.footer", interaction.guild).format(
+                    curent_year = datetime.now().year,
+                    dev_site_url = config["dev"]["site"]
                 ),
-                icon_url=config["bot"]["icon"]
+                icon_url = config["bot"]["icon"]
             )
-            embed.set_thumbnail(url=interaction.guild.icon)
+            embed.set_thumbnail(url = interaction.guild.icon)
             
-            return await interaction.response.send_message(embed=embed, ephemeral=True)
+            return await interaction.response.send_message(embed = embed, ephemeral = True)
             
         embed = discord.Embed(
-            title="Мут знято",
-            description="Ви знаяли мут з учасника {member_name}".format(member_name=member.name),
-            color=HexToColor(config["bot"]["color"]["ok"])
+            title = GetMsg("commands.unmute.embed.title", interaction.guild.name),
+            description = GetMsg("commands.unmute.embed.description", interaction.guild).format(member_name = member.name),
+            color = HexToColor(config["bot"]["color"]["ok"])
         )
         embed.set_footer(
-            text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
-                curent_year=datetime.now().year,
-                developer_site_url=config["dev"]["site"]
-            ),
-            icon_url=config["bot"]["icon"]
-        )
-        embed.set_thumbnail(url=interaction.guild.icon)
+                text = GetMsg("general.embed.footer", interaction.guild).format(
+                    curent_year = datetime.now().year,
+                    dev_site_url = config["dev"]["site"]
+                ),
+                icon_url = config["bot"]["icon"]
+            )
+        embed.set_thumbnail(url = interaction.guild.icon)
         
         await member.timeout(None, reason=reason)
-        await interaction.response.send_message(embed=embed, ephemeral=True)
+        await interaction.response.send_message(embed = embed, ephemeral = True)
         
         
     @unmute.error
@@ -60,15 +59,15 @@ class UnmuteCommand(commands.Cog):
         if isinstance(error, app_commands.MissingPermissions):
             await interaction.response.send_message(
                 embed = discord.Embed(
-                    title="Помилка!",
-                    description="У вас не достатьо прав для використання цієї команди.",
-                    color=HexToColor(config["bot"]["color"]["error"]),
+                    title = f"{GetMsg("errors.general.error", interaction.guild.name)}!",
+                    description = GetMsg("general.embed.footer", interaction.guild),
+                    color = HexToColor(config["bot"]["color"]["error"]),
                 ).set_footer(
-                    text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
-                        curent_year=datetime.now().year,
-                        developer_site_url=config["dev"]["site"]
+                    text = GetMsg("general.embed.footer", interaction.guild).format(
+                        curent_year = datetime.now().year,
+                        dev_site_url = config["dev"]["site"]
                     ),
-                    icon_url=config["bot"]["icon"]
+                    icon_url = config["bot"]["icon"]
                 ),
                 ephemeral=True
             )
