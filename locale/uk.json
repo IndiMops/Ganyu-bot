@@ -2,6 +2,7 @@
     "general": {
         "locale_name": "Українська",
         "none": "Немає",
+        "no_reason": "Причина не була надана",
         "embed": {
             "footer": "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}"
         },
@@ -23,7 +24,11 @@
     "errors": {
         "general": {
             "error": "Помилка",
-            "missing_permissions": "У вас не достатньо прав для використання цієї команди."
+            "warning": "Попередження",
+            "missing_permissions": "У вас не достатньо прав для використання цієї команди.",
+            "invalid_timespan": "Ви ввели не правильний формат часу.\nПідтримується такий формат часу: `5s`, `5m`, `5h`, `5d`.",
+            "nute_duration_limit": "Виберіть менший період муту. Discord не підтримує мути більше 28 днів.",
+            "user_not_have_mute": "На даний момент учасник не має мут."
         },
         "commands": {}
     },
@@ -66,8 +71,7 @@
                 }
             },
             "ban_reason": {
-                "if_reason_exists": "{administrator_name} видав бан {baned_member} з причиною: {reason}.",
-                "no_reason": "Причина не була надана"
+                "if_reason_exists": "{administrator_name} видав бан {baned_member} з причиною: {reason}."
             }
         },
         "server": {
@@ -90,6 +94,65 @@
                     "status": "{emoji_online}Онлайн: **{online}**\n{emoji_idle}Відійшли: **{idle}**\n{emoji_offline}Не в мережі: **{offline}**",
                     "channels": "{emoji_total_channels} Всього: **{total_channels}**\n{emoji_text_channels} Текстові: **{text_channels}**\n{emoji_voice_channels} Голосові: **{voice_channels}**"
                 }
+            }
+        },
+        "kick": {
+            "description": "Виганяє учасника з сервера.",
+            "describe": {
+                "member": "Учасник, якого потрібно вигнати.",
+                "reason": "Причина, через яку виганяють учасника."
+            },
+            "kick_reason": {
+                "if_reason_exists": "{administrator_name} вигнав {kiked_member} з причиною: {reason}."
+            },
+            "embed": {
+                "title": "Учасника було вигнано!",
+                "description": "Ви вигнали учасника."
+            }
+        },
+        "mute": {
+            "description": "Тимчасово заглушити користувача на сервері",
+            "describe": {
+                "member": "Учасник, якому потрібно видати мут.",
+                "duration": "Час на який видається мут. За замовчуванням на 60 секунд.",
+                "reason": "Причина через яку видається мут."
+            },
+            "mute_reason": {
+                "if_reason_exists": "{administrator_name} видав мут {member_name} з причиною: {reason}."
+            },
+            "embed": {
+                "title": "Учасникик був зам'ючений",
+                "description": "Ви успішно заглушили учасника {member_mention} на `{duration}`\nПричина:\n`{reason_text}"
+            }
+        },
+        "unbun": {
+            "description": "Розбанити користувача на сервері.",
+            "describe": {
+                "member": "Користувач якого потрібно розбанити. Щоб дізнатися id користувача скористайтеся `/{command_name}`.",
+                "reason": "Причина з якої ви розбанюєте учасника."
+            },
+            "unban_reason": "{administrator_name} зняв бан {member_name} з причиною: {reason}.",
+            "embed": {
+                "title": "Учасника було розбанено!",
+                "description": "Ви розбанили учасника."
+            },
+            "invite": "Створине автоматично. Через те, що {admin_name} розбанив користувача {user_name}.",
+            "DM": {
+                "embed": {
+                    "title": "Вас розбанили!",
+                    "description": "З вас зняли бан на сервері: `{guild_name}`\nАдмінстратором: {administrator_name}.\nПричина: ```{reason_unban}```\n\nЯкщо ви бажаєте повернутися на серевер ви можете скористатися цим запрошенням: {server_invite_url}"
+                }
+            }
+        },
+        "unmute": {
+            "description": "Зняти мут із учасника.",
+            "describe": {
+                "member": "Учасник, якому потрібно зняти мут.",
+                "reason": "Причина зняття мута."
+            },
+            "embed": {
+                "title": "Учасника було розм'ючено!",
+                "description": "Ви зняли мут з учасника {member_name}"
             }
         }
     }
