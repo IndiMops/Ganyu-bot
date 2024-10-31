@@ -21,9 +21,9 @@ class BanCommand(commands.Cog):
     @app_commands.checks.has_permissions(ban_members=True)
     async def ban(self, interaction: discord.Interaction, member: discord.Member, reason: Optional[str], delete_message: Optional[int]):
         ban_reason = GetMsg("commands.ban.ban_reason.if_reason_exists", interaction.guild).format(
-            administrator_name=interaction.user.name,
-            baned_member=member.name,
-            reason=reason if reason else GetMsg("commands.ban.ban_reason.no_reason")
+            administrator_name = interaction.user.name,
+            baned_member = member.name,
+            reason = reason if reason else GetMsg("general.no_reason")
         )
 
         if delete_message is None:

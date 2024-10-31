@@ -15,36 +15,36 @@ class KickCommand(commands.Cog):
         self.bot = bot
         
         
-    @app_commands.command(name="kick", description="Виганяє учасника із сервера.")
-    @app_commands.describe(member="Учасник, якого потрібно вигнати.")
-    @app_commands.describe(reason="Причина, через яку виганяють учасника.")
+    @app_commands.command(name = "kick", description = GetMsg("commands.kick.description"))
+    @app_commands.describe(member = GetMsg("commands.kick.describe.member"))
+    @app_commands.describe(reason = GetMsg("commands.kick.describe.reason"))
     @app_commands.checks.has_permissions(kick_members=True)
     async def kick(self, interaction: discord.Interaction, member: discord.Member, reason: Optional[str]):
-        kick_reason = "{administrator_name} вигнав {kiked_member} з причиною: {reason}.".format(
-            administrator_name=interaction.user.name,
-            kiked_member=member.name,
-            reason=reason if reason else "Причина не надана"
+        kick_reason = GetMsg("commands.kick.kick_reason.if_reason_exists", interaction.guild).format(
+            administrator_name = interaction.user.name,
+            kiked_member = member.name,
+            reason = reason if reason else GetMsg("general.no_reason", interaction.guild)
         )
 
         try:
-            await member.kick(reason=kick_reason)
+            await member.kick(reason = kick_reason)
             
             embed = discord.Embed(
-                title="Учасника було вигнано!",
-                description="Ви вигнали учасника",
-                color=HexToColor(config["bot"]["color"]["ok"])
+                title = GetMsg("commands.kick.embed.title", interaction.guild),
+                description = GetMsg("commands.kick.embed.description", interaction.guild),
+                color = HexToColor(config["bot"]["color"]["ok"])
             )
             embed.set_author(
-                name=member.name,
-                url="https://discord.com/users/{member_id}".format(member_id=member.id),
-                icon_url=member.avatar.url if member.avatar else discord.Embed.Empty
+                name = member.name,
+                url = "https://discord.com/users/{member_id}".format(member_id=member.id),
+                icon_url = member.avatar.url if member.avatar else discord.Embed.Empty
             )
             embed.set_footer(
-                text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
-                    curent_year=datetime.now().year,
-                    developer_site_url=config["dev"]["site"]
+                text = GetMsg("general.embed.footer", interaction.guild).format(
+                    curent_year = datetime.now().year,
+                    dev_site_url = config["dev"]["site"]
                 ),
-                icon_url=config["bot"]["icon"]
+                icon_url = config["bot"]["icon"]
             )
             
             await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -57,17 +57,17 @@ class KickCommand(commands.Cog):
         if isinstance(error, app_commands.MissingPermissions):
             await interaction.response.send_message(
                 embed = discord.Embed(
-                    title="Помилка!",
-                    description="У вас не достатьо прав для використання цієї команди.",
-                    color=HexToColor(config["bot"]["color"]["error"]),
+                    title = f"{GetMsg("errors.general.error", interaction.guild)}!",
+                    description = GetMsg("errors.general.missing_permissions", interaction.guild),
+                    color = HexToColor(config["bot"]["color"]["error"]),
                 ).set_footer(
-                    text="Mops Storage © 2020-{curent_year} Всі права захищено • {developer_site_url}".format(
-                        curent_year=datetime.now().year,
-                        developer_site_url=config["dev"]["site"]
+                    text = GetMsg("general.embed.footer", interaction.guild).format(
+                        curent_year = datetime.now().year,
+                        dev_site_url = config["dev"]["site"]
                     ),
-                    icon_url=config["bot"]["icon"]
+                    icon_url = config["bot"]["icon"]
                 ),
-                ephemeral=True
+                ephemeral = True
             )
     
         
