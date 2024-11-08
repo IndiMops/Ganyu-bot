@@ -1,13 +1,17 @@
 """These are auxiliary functions to work bot"""
 import logging
 import random
-import time
+import mysql.connector
+import discord
 
 from json import loads, dumps
 from discord import Guild
 from typing import Any, Union
 from colorama import init, Fore, Back, Style
-from time import time
+from mysql.connector import Error
+from discord.ui import View, Button
+from typing import List
+
 
 try:
     with open("config.json", 'r', encoding="utf-8") as json_file:
@@ -251,3 +255,94 @@ def setup_logging():
     # logger.addHandler(console_handler)
 
     return logger
+
+class Database:
+    def __init__(self, host, user, password, database):
+        self.connection = None
+        self.host = host
+        self.user = user
+        self.password = password
+        self.database = database
+        self.loggin = setup_logging()
+
+    def connect(self):
+        try:
+            self.connection = mysql.connector.connect(
+                host=self.host,
+                user=self.user,
+                password=self.password,
+                database=self.database
+            )
+            if self.connection.is_connected():
+                logging.info("Successfully connected to the database")
+        except Error as e:
+            logging.error("Error while connecting to MySQL:\n", e)
+            
+    def commit(self):
+        if self.connection.is_connected():
+            self.connection.commit()
+        else:
+            logging.error("Database is not connected")
+
+    def close(self):
+        if self.connection.is_connected():
+            self.connection.close()
+            logging.error("Database connection closed")
+            
+            
+class PagginationView(View):
+    def __init__(self, embeds: List[discord.Embed]) -> None:
+        super().__init__()
+        
+        self._embeds = embeds
+        self._initial = embeds[0] # First embed
+        self._len = len(embeds)
+        self._current_page = 1
+        self.children[0].disabled = True
+        self.children[1].disabled = True
+        self.children[2].label = f"{self._current_page}/{self._len}"
+        
+    async def update_butons(self, interaction: discord.Interaction) -> None:
+        self.children[0].disabled = self._current_page == 1  # Previous
+        self.children[1].disabled = self._current_page == 1  # First
+        self.children[2].label = f"{self._current_page}/{self._len}"
+        self.children[3].disabled = self._current_page == self._len  # Last
+        self.children[4].disabled = self._current_page == self._len  # Next
+        
+        await interaction.edit_original_response(view=self)
+    
+    @discord.ui.button(emoji="⏪")
+    async def first(self, interaction: discord.Interaction, _):
+        self._current_page = 1
+        await interaction.response.edit_message(embed=self._embeds[self._current_page - 1])
+        await self.update_butons(interaction)
+    
+    @discord.ui.button(emoji="◀️")
+    async def previous(self, interaction: discord.Interaction, _):
+        if self._current_page > 1:
+            self._current_page -= 1
+            await interaction.response.edit_message(embed=self._embeds[self._current_page - 1])
+            await self.update_butons(interaction)
+            
+            
+    @discord.ui.button(style=discord.ButtonStyle.danger,  disabled=True)
+    async def curent_page(self, interaction: discord.Interaction, _):
+        pass
+        
+    @discord.ui.button(emoji="▶️")
+    async def next(self, interaction: discord.Interaction, _):
+        if self._current_page < self._len:
+            self._current_page += 1
+            await interaction.response.edit_message(embed=self._embeds[self._current_page - 1])
+            await self.update_butons(interaction)
+        
+    @discord.ui.button(emoji="⏩")
+    async def last(self, interaction: discord.Interaction, _):
+        self._current_page = self._len
+        await interaction.response.edit_message(embed=self._embeds[self._current_page - 1])
+        await self.update_butons(interaction)
+        
+    @property
+    def initial(self) -> discord.Embed:
+        return self._initial
+    
