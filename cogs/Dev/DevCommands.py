@@ -6,11 +6,30 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ui import Select, View, Button, Modal
 from ganyu_utils import *
+from ganyu_utils import Database
 from dotenv import load_dotenv
+from typing import List
+
+import mysql.connector
+from mysql.connector import Error
 
 config = LoadJson("config.json")
 logger = setup_logging()
 load_dotenv()
+
+try:
+    conn = mysql.connector.connect(
+        host=os.getenv("MYSQL_HOST"),
+        user=os.getenv("MYSQL_USER"),
+        password=os.getenv("MYSQL_PASSWORD"),
+        database=os.getenv("MYSQL_DATABASE")
+    )
+    
+    cursor = conn.cursor()
+    logger.info("Connected to MySQL")
+except Error as e:
+    logger.error("Error while connecting to MySQL", e)
+    
 
 class DevCommands(commands.Cog, name = "Developer Commands"):
     """Commands to test various functions, events, etc.
@@ -18,17 +37,16 @@ class DevCommands(commands.Cog, name = "Developer Commands"):
     """
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        
-    @commands.Cog.listener()
-    async def on_ready(self):
-        logger.info("Dev Commands are loaded.")
 
-    
     @commands.hybrid_command()
     async def sync(self, ctx: commands.Context):
         if ctx.author.id == int(config["dev"]["id"]):
             await ctx.send("Синхронізація...")
-            await self.bot.tree.sync(guild=ctx.guild)
+            await self.bot.tree.sync()
+            await ctx.send("Синхронізація завершена!")
+            commands = await self.bot.tree.fetch_commands()
+            for comamnd in commands:
+                print(f"Command: {comamnd.name}: {comamnd.id}")
         else:
             await ctx.send("You must be the owner to use this command!\nYour id: {0}\nOwner id: {1}".format(ctx.author.id, config["dev"]["id"]))
     
@@ -148,6 +166,40 @@ class DevCommands(commands.Cog, name = "Developer Commands"):
     
     
     
+    @app_commands.command(name="test_db", description="Тестування роботи з базою даних")
+    async def test_db(self, interaction: discord.Interaction):
+        cursor = self.bot.db.connection.cursor()
+        
+        if config["dev"]["id"] == str(interaction.user.id):
+            # Створюємо словник з індексом для кожного сервера
+            server_data = {
+                index: {
+                    "name": guild.name,
+                    "id": str(guild.id)
+                }
+                for index, guild in enumerate(self.bot.guilds)
+            }
+        
+            for index in server_data:
+                server = server_data[index]
+                cursor.execute("INSERT INTO servers (name, discord_id) VALUES (%s, %s)", (server["name"], int(server["id"])))
+                
+            self.bot.db.commit()
+        else:
+            await interaction.response.send_message(content="Вибач, але ти не мій господар. Тому я не буду для тебе це виконувати<:chibiganyudeadinside:1265243125740470294>")
+
+
+    @app_commands.command(name="test_db2", description="Тестування роботи з базою даних")
+    async def terst_db2(self, interaction: discord.Interaction):
+        cursor = self.bot.db.connection.cursor()
+        
+        if config["dev"]["id"] == str(interaction.user.id):
+            cursor.execute("SELECT * FROM servers WHERE discord_id = %s", (interaction.guild.id,))
+            servers = cursor.fetchone()
+            print(servers)
+        else:
+            await interaction.response.send_message(content="Вибач, але ти не мій господар. Тому я не буду для тебе це виконувати<:chibiganyudeadinside:1265243125740470294>")
     
+
 async def setup(bot):
     await bot.add_cog(DevCommands(bot))

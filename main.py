@@ -5,18 +5,27 @@ import os
 
 from discord.ext import commands, tasks
 from ganyu_utils import *
+from ganyu_utils import Database
 from dotenv import load_dotenv
 from discord import app_commands
 from random import random
+from typing import List
 
 load_dotenv()
 config = LoadJson("config.json")
 logger = setup_logging()
+db = Database(
+    host = os.getenv("MYSQL_HOST"),
+    user = os.getenv("MYSQL_USER"),
+    password = os.getenv("MYSQL_PASSWORD"),
+    database = os.getenv("MYSQL_DATABASE")
+)
 
 # Set up the bot with when_mentioned as a command prefix
 bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 bot.remove_command("help")
 discord.utils.setup_logging(level = logging.INFO, root = False)
+bot.db = db
 
 # Initialize the global variable bot_commands
 bot_commands = {}
@@ -25,8 +34,9 @@ bot_commands = {}
 @bot.event
 async def on_ready():
     try:
+        db.connect() # Connect to the database
         await bot.tree.sync()
-        logger.info("Bot is online!")
+        logger.info(f"Logged in as {bot.user}")
         change_status.start()
         # Get bot slash commands
         commands = await bot.tree.fetch_commands()
@@ -37,9 +47,7 @@ async def on_ready():
                 "id": str(command.id)
             }
             
-        # print(config["bot_commands"])
         bot_commands_json = json.dumps(bot_commands, indent=4, ensure_ascii=False)
-        # print(bot_commands_json)
         
         if "bot_commands" in config:
             config["bot_commands"] = json.loads(bot_commands_json)
@@ -49,7 +57,17 @@ async def on_ready():
     except Exception as exp:
         print(exp)
 
+@bot.event
+async def on_disconnect():
+    db.close()  # Close the connection to the database
 
+@bot.event
+async def on_guild_join(guild):
+    print(f"Joined guild {guild.name} with {guild.member_count} members")
+
+@bot.event
+async def on_guild_remove(guild):
+    print(f"Left guild {guild.name} with {guild.member_count} members")
 
 @tasks.loop(seconds=10)
 async def change_status():
