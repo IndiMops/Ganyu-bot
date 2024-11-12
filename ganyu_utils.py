@@ -9,8 +9,8 @@ from discord import Guild
 from typing import Any, Union
 from colorama import init, Fore, Back, Style
 from mysql.connector import Error
-from discord.ui import View, Button
-from typing import List
+from discord.ui import View
+from typing import List, Optional
 
 
 try:
@@ -291,7 +291,7 @@ class Database:
             
             
 class PagginationView(View):
-    def __init__(self, embeds: List[discord.Embed]) -> None:
+    def __init__(self, embeds: List[discord.Embed], select_menu: Optional[discord.ui.Select]) -> None:
         super().__init__()
         
         self._embeds = embeds
@@ -301,6 +301,9 @@ class PagginationView(View):
         self.children[0].disabled = True
         self.children[1].disabled = True
         self.children[2].label = f"{self._current_page}/{self._len}"
+        
+        if select_menu:
+            self.add_item(select_menu)
         
     async def update_butons(self, interaction: discord.Interaction) -> None:
         self.children[0].disabled = self._current_page == 1  # Previous

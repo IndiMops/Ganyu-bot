@@ -1,6 +1,6 @@
 import discord
 
-from ganyu_utils import *
+from ganyu_utils import LoadJson, setup_logging, HexToColor, GetCommand, PagginationView
 from discord.ext import commands
 from discord import app_commands
 from discord.ui import Select, View
@@ -24,91 +24,81 @@ class HelpCommand(commands.Cog):
                 options=[
                     discord.SelectOption(
                         label="Інформація",
-                        value="1",
+                        value="0",
                         emoji="📃"
                     ),
                     discord.SelectOption(
                         label="Модерація",
-                        value="2",
+                        value="1",
                         emoji="🛡️"
                     )
                 ]
             )
-            
+
             async def callback(interaction: discord.Interaction):
-                # Description of the Information category menu
-                if menu.values[0] == "1":
-                    embed = discord.Embed(
-                        title = f"Доступні команди категорії {menu.options[0].emoji} {menu.options[0].label}",
-                        description = "Ви можете отримати детальну інформацію для кожної команди, викликавши її за допомогою </{command_name}:{command_id}> `<command:name>`".format(command_name=GetCommand(3)["name"], command_id=GetCommand(3)["id"]),
-                        color=HexToColor(config["bot"]["color"]["default"])
-                    )
-                    embed.set_thumbnail(url = config["bot"]["icon"])
-                    embed.set_footer(
-                        text = "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}".format(curent_year = datetime.now().year, dev_site_url = config["bot"]["site"]),
-                        icon_url = config["bot"]["icon"]
-                    )
-                    
-                    # Splitting each command of the category via discord.Embed.add_field()
-                    embed.add_field(
-                        name = "• </{0}:{1}>".format(GetCommand(3)["name"], GetCommand(3)["id"]),
-                        value = "↪Відображає перелік усіх доступних команд бота з короткими описами для кожної команди",
-                        inline = False
-                    )
-                    
-                    await interaction.response.edit_message(embed = embed)
+                category_index = int(menu.values[0])
+                category = menu.options[category_index]
                 
-                # Description of the Moderation category menu
-                if menu.values[0] == "2":
+                # We collect commands for the selected category
+                commands = []
+                if category.value == "0":  # Information category
+                    commands = [
+                        {"name": GetCommand(3)["name"], "id": GetCommand(3)["id"], "description": "Відображає перелік усіх доступних команд бота з короткими описами для кожної команди"}
+                    ]
+                elif category.value == "1":  # Moderation category
+                    commands = [
+                        {"name": GetCommand(6)["name"], "id": GetCommand(6)["id"], "description": "Виганяє зазначеного учасника з сервера."},
+                        {"name": GetCommand(7)["name"], "id": GetCommand(7)["id"], "description": "Забороняє доступ зазначеному учаснику на сервер, видаючи йому бан."},
+                        {"name": GetCommand(8)["name"], "id": GetCommand(8)["id"], "description": "Відображає список учасників, які отримали бан, разом із причинами їх блокування."},
+                        {"name": GetCommand(9)["name"], "id": GetCommand(9)["id"], "description": "Знімає бан із зазначеного учасника, дозволяючи йому повернутися на сервер."},
+                        {"name": GetCommand(10)["name"], "id": GetCommand(10)["id"], "description": "Тимчасово позбавляє учасника можливості писати повідомлення на сервері на вказаний період часу (до 28-и діб)."},
+                        {"name": GetCommand(11)["name"], "id": GetCommand(11)["id"], "description": "Знімає тимчасовий м'ют із зазначеного учасника, відновлюючи його можливість писати повідомлення на сервері."}
+                    ]
+
+                # We divide the commands into pages if there are more than 10 of them
+                pages = []
+                for i in range(0, len(commands), 10):
                     embed = discord.Embed(
-                        title = f"Доступні команди категорії {menu.options[1].emoji} {menu.options[1].label}",
-                        description = "Ви можете отримати детальну інформацію для кожної команди, викликавши її за допомогою </{command_name}:{command_id}> `<command:name>`".format(command_name=GetCommand(3)["name"], command_id=GetCommand(3)["id"]),
+                        title=f"Доступні команди категорії {category.emoji} {category.label}",
+                        description="Ви можете отримати детальну інформацію для кожної команди, викликавши її за допомогою відповідного команди.",
                         color=HexToColor(config["bot"]["color"]["default"])
                     )
-                    embed.set_thumbnail(url = config["bot"]["icon"])
+                    embed.set_thumbnail(url=config["bot"]["icon"])
                     embed.set_footer(
-                        text = "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}".format(curent_year = datetime.now().year, dev_site_url = config["bot"]["site"]),
-                        icon_url = config["bot"]["icon"]
+                        text="Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}".format(curent_year=datetime.now().year, dev_site_url=config["bot"]["site"]),
+                        icon_url=config["bot"]["icon"]
                     )
-                    
-                    # Splitting each command of the category via discord.Embed.add_field()
-                    embed.add_field(
-                        name = "• </{0}:{1}>".format(GetCommand(6)["name"], GetCommand(6)["id"]),
-                        value = "↪Виганяє зазначеного учасника з сервера.",
-                        inline = False
+
+                    # Add commands to the page
+                    for command in commands[i:i+10]:
+                        embed.add_field(
+                            name=f"• </{command['name']}:{command['id']}>",
+                            value=f"↪{command['description']}",
+                            inline=False
+                        )
+                    pages.append(embed)
+
+                # We check whether there are pages in "pages"
+                if pages:
+                    # If there is more than one page, we use pagination
+                    if len(pages) > 1:
+                        menu.callback = callback
+                        await interaction.response.edit_message(embed=pages[0], view=PagginationView(pages, menu))
+                    else:
+                        # If there is only one page, we display it without pagination
+                        view = View()
+                        if menu:  # Add select if it is needed
+                            view.add_item(menu)
+                        await interaction.response.edit_message(embed=pages[0], view=view)
+                else:
+                    # If the list of pages is empty, we display a message about the absence of commands
+                    embed = discord.Embed(
+                        title="Команди не знайдені",
+                        description="Для обраної категорії немає доступних команд.",
+                        color=HexToColor(config["bot"]["color"]["default"])
                     )
-                    
-                    embed.add_field(
-                        name = "• </{0}:{1}>".format(GetCommand(7)["name"], GetCommand(7)["id"]),
-                        value = "↪Забороняє доступ зазначеному учаснику на сервер, видаючи йому бан.",
-                        inline = False
-                    )
-                    
-                    embed.add_field(
-                        name = "• </{0}:{1}>".format(GetCommand(8)["name"], GetCommand(8)["id"]),
-                        value = "↪Відображає список учасників, які отримали бан, разом із причинами їх блокування.",
-                        inline = False
-                    )
-                    
-                    embed.add_field(
-                        name = "• </{0}:{1}>".format(GetCommand(9)["name"], GetCommand(9)["id"]),
-                        value = "↪Знімає бан із зазначеного учасника, дозволяючи йому повернутися на сервер.",
-                        inline = False
-                    )
-                    
-                    embed.add_field(
-                        name = "• </{0}:{1}>".format(GetCommand(10)["name"], GetCommand(10)["id"]),
-                        value = "↪Тимчасово позбавляє учасника можливості писати повідомлення на сервері на вказаний період часу (до 28-и діб).",
-                        inline = False
-                    )
-                    
-                    embed.add_field(
-                        name = "• </{0}:{1}>".format(GetCommand(11)["name"], GetCommand(11)["id"]),
-                        value = "↪Знімає тимчасовий м'ют із зазначеного учасника, відновлюючи його можливість писати повідомлення на сервері.",
-                        inline = False
-                    )
-                    
-                    await interaction.response.edit_message(embed = embed)
+                    await interaction.response.edit_message(embed=embed)
+
 
             # Creating a view and adding the menu to it
             menu.callback = callback
