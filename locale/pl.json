@@ -1,82 +1,82 @@
 {
     "general": {
-        "locale_name": "Українська",
-        "none": "Немає",
-        "no_reason": "Причина не була надана",
+        "locale_name": "Ukraiński",
+        "none": "Brak",
+        "no_reason": "Powód nie został podany",
         "embed": {
-            "footer": "Mops Storage © 2020-{curent_year} Всі права захищено • {dev_site_url}"
+            "footer": "Mops Storage © 2020-{curent_year} Wszelkie prawa zastrzeżone • {dev_site_url}"
         },
         "nsfw_filters": {
-            "all": "Перевіряти кожного учасника",
-            "without_role": "Перевіряти учасників без ролей",
-            "disabled": "Не встановлено",
-            "not_found": "Не знайдено"
+            "all": "Sprawdź każdego użytkownika",
+            "without_role": "Sprawdź użytkowników  bez ról",
+            "disabled": "Nie zainstalowano",
+            "not_found": "Nie znaleziono"
         },
         "verification_level": {
-            "extreme": "Найвищий",
-            "high": "Високий",
-            "medium": "Середній",
-            "low": "Низький",
-            "none": "Не встановлено",
-            "not_found": "Не знайдено"
+            "extreme": "Najwyższy",
+            "high": "Wysoki",
+            "medium": "Średni",
+            "low": "Niski",
+            "none": "Nie zainstalowano",
+            "not_found": "Nie znaleziono"
         }
     },
     "errors": {
         "general": {
-            "error": "Помилка",
-            "warning": "Попередження",
-            "missing_permissions": "У вас не достатньо прав для використання цієї команди.",
-            "invalid_timespan": "Ви ввели не правильний формат часу.\nПідтримується такий формат часу: `5s`, `5m`, `5h`, `5d`.",
-            "nute_duration_limit": "Виберіть менший період муту. Discord не підтримує мути більше 28 днів.",
-            "user_not_have_mute": "На даний момент учасник не має мут."
+            "error": "Błąd",
+            "warning": "Ostrzeżenie",
+            "missing_permissions": "Nie posiadasz wystarczających uprawnień do użycia tej komendy",
+            "invalid_timespan": "Wprowadziłeś niepoprawny format czasu.\nWspierany jest format: `5s`, `5m`, `5h`, `5d`.",
+            "nute_duration_limit": "Wybierz krótszy okres mute'a. Discord nie umożliwia muteów dłuższych niż 28 dni",
+            "user_not_have_mute": "W tym momencie użytkownik nie ma mute'a"
         },
         "commands": {}
     },
     "commands": {
         "info": {
             "embed": {
-                "description": "Привіт, я Ґанью секретар Цісін із Ліюе. Моє завдання допомагати мандрівникам освоюватися з дивовижним світом Тейват\n\nЯ використовую слеш-команди, тому тепер я стала ще більш зручним ботом. Якщо ти хочеш дізнатися всі мої команди тоді можеш скористатися </{command_help_name}:{command_help_id}>. Або скористайся </{command_journey_name}:{command_journey_id}>, щоб розпочати свою подорож{emoji_ganyu_roll}"
+                "description": "Cześć, jestem Ganyu, sekretarka Liyue Qixing. Moim zadaniem jest pomaganie wędrowcom oswajać się z niezwykłym światem Teyvat\nUżywam slash commands, dlatego stałam się teraz jeszcze wygodniejszym w obsłudze botem. Jeśli chcesz poznać wszystkie moje komendy, możesz użyć </{command_help_name}:{command_help_id}>. Możesz też wykorzystać  </{command_journey_name}:{command_journey_id}>, by rozpocząć swoją podróż{emoji_ganyu_roll}"
             },
             "fields": {
                 "name": {
-                    "build": "Збірка:",
-                    "dev": "Мій розробник:",
-                    "link1": "Корисні посилання:"
+                    "build": "Zbiór:",
+                    "dev": "Mój twórca:",
+                    "link1": "Wartościowe linki:"
                 },
                 "value": {
                     "build": "{bot_version} (<t:{last_update_Unix_time}:d>)",
                     "dev": "{dev_emoji} [{dev_name}](https://discord.com/users/{dev_id})",
-                    "link1": "[Вебсайт]({bot_site_url})\n[Сервер підтримки]({bot_support_server_url})",
-                    "link2": "[GitHub репозиторій]({bot_github_url})\n[top.gg]({bot_top_gg_url})"
+                    "link1": "[Strona]({bot_site_url})\n[Support]({bot_support_server_url})",
+                    "link2": "[Repozytorium GitHub]({bot_github_url})\n[top.gg]({bot_top_gg_url})"
                 }
             }
         },
         "ban_list": {
             "embed": {
-                "title": "Список забанених користувачів сервера {server_name}",
-                "overrun_members": "Кількість забанених користувачів перевищує 10. Ось список у вигляді файлу:",
-                "descriptions_no_baned_members": "На сервері немає забанених користувачів{emoji}",
-                "ban_reason": "**Причина**: `{ban_reason}`"
+                "title": "Spis zbanowanych użytkowników serwera {server_name}",
+                "overrun_members": "Liczba zbanowanych użytkowników przekracza 10. Oto spis w formie pliku:",
+                "descriptions_no_baned_members": "Na serwerze niema zbanowanych użytkowników{emoji}",
+                "ban_reason": "**Powód**: `{ban_reason}`"
             }
         },
         "ban": {
             "embed": {
                 "administrator": {
-                    "title": "Учасник був забанений!",
-                    "description": "Ви забанили учасника."
+                    "title": "Użytkownik został zbanowany!",
+                    "description": "Zbanowałeś użytkownika."
                 },
                 "DM_member": {
-                    "title": "Ви були забананені!",
-                    "description": "Ви отримали бан на сервері: `{guild_name}`\nАдмінстратор, що видав бан: {administrator_name}.\nПричина: ```{reason_ban}```"
+                    "title": "Zostałeś zbanowany!",
+                    "description": "Otrzymałeś bana na serwerze: `{guild_name}`\nAdministrator,  który nałożył bana: {administrator_name}.\nPowód: ```{reason_ban}```"
                 }
             },
             "ban_reason": {
-                "if_reason_exists": "{administrator_name} видав бан {baned_member} з причиною: {reason}."
+                "if_reason_exists": "{administrator_name} zbanował {baned_member} z powodu: {reason}."
             }
         },
         "server": {
             "embed": {
-                "title": "Інформація про сервер {server_name}"
+                "title": "Informacja o serwerze {server_name}"
             },
             "fields": {
                 "name": {
