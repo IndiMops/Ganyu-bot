@@ -1,6 +1,5 @@
-from ganyu_utils import setup_logging
+from main import logger
 
-logger = setup_logging()
 
 logger.info("Moderation commands are loaded.")
 

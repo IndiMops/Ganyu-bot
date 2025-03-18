@@ -1,23 +1,37 @@
 """
-This module initializes and runs a Discord bot using the discord.py library.
+This module sets up and runs a Discord bot using the discord.py library.
 
-The bot connects to a MySQL database, loads configuration from a JSON file, and sets up logging.
-It defines event handlers for bot readiness, disconnection, and guild join/removal events.
-It also periodically changes the bot's status and activity based on the number of unique non-bot 
-members in the guilds.
+The bot connects to a MySQL database, loads configuration from a JSON file,
+and dynamically loads command extensions (cogs) from the 'cogs' directory.
+It also handles various bot events such as on_ready, on_disconnect, on_guild_join,
+and on_guild_remove, and periodically changes its status.
+
+Modules:
+    asyncio: Provides support for asynchronous programming.
+    json: Provides support for JSON encoding and decoding.
+    discord: Provides the core functionality for interacting with the Discord API.
+    os: Provides a way of using operating system dependent functionality.
+    dotenv: Loads environment variables from a .env file.
+    random: Implements pseudo-random number generators for various distributions.
+    typing: Provides runtime support for type hints.
 
 Functions:
-    on_ready() - Asynchronous event handler called when the bot is ready to start processing events.
-    on_disconnect() - Asynchronous function called when the client disconnects.
-    on_guild_join(guild) - Event handler called when the bot joins a guild.
-    on_guild_remove(guild) - Event handler called when the bot is removed from a guild.
-    change_status() - Changes the status and activity of the bot periodically.
-    load_extensions() - Loads cogs (extensions) for the bot.
-    main() - Main function that loads extensions and starts the bot.
+    load_extensions: Loads command extensions (cogs) from the 'cogs' directory.
 
-Usage:
-    Ensure that the necessary extensions are loaded before starting the bot.
-    Start the bot by passing the bot token as an environment variable.
+Classes:
+    Database: A custom class for interacting with the MySQL database.
+
+Events:
+    on_ready: Called when the bot is ready.
+    on_disconnect: Called when the bot disconnects.
+    on_guild_join: Called when the bot joins a new guild.
+    on_guild_remove: Called when the bot leaves a guild.
+
+Tasks:
+    change_status: Periodically changes the bot's status.
+
+Entry Point:
+    main: The main entry point for running the bot.
 """
 import os
 import json

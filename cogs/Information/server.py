@@ -38,7 +38,6 @@ class ServerCommand(commands.Cog):
         nsfwlvl = nsfw_filters.get(nsfwlvl, GetMsg("general.nsfw_filters.not_found", interaction.guild))
         
         
-        
         verification = str(interaction.guild.verification_level)
         verefication_levels = {
             "extreme": GetMsg("general.verification_level.extreme", interaction.guild),
@@ -68,6 +67,10 @@ class ServerCommand(commands.Cog):
             else:
                 return None
             
+        cursor = self.bot.db.connection.cursor()
+        cursor.execute("SELECT locale FROM servers WHERE discord_id = %s", (str(interaction.guild_id),))
+        bot_locale = cursor.fetchone()[0]
+           
          
         embed = discord.Embed(
             title = GetMsg("commands.server.embed.title", interaction.guild).format(server_name = interaction.guild.name),
@@ -81,8 +84,8 @@ class ServerCommand(commands.Cog):
         )
         
         embed.add_field(
-            name = "ID", 
-            value = interaction.guild.id, 
+            name = "Мова бот на сервері:", 
+            value = get_str_locale(interaction, bot_locale),
             inline = True
         )
         
