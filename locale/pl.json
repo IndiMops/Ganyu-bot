@@ -21,7 +21,7 @@
         },
         "nsfw_filters": {
             "all": "Sprawdź każdego użytkownika",
-            "without_role": "Sprawdź użytkowników  bez ról",
+            "without_role": "Sprawdź użytkowników bez ról",
             "disabled": "Nie zainstalowano",
             "not_found": "Nie znaleziono"
         },
@@ -38,10 +38,10 @@
         "general": {
             "error": "Błąd",
             "warning": "Ostrzeżenie",
-            "missing_permissions": "Nie posiadasz wystarczających uprawnień do użycia tej komendy",
+            "missing_permissions": "Nie posiadasz wystarczających uprawnień do użycia tej komendy.",
             "invalid_timespan": "Wprowadziłeś niepoprawny format czasu.\nWspierany jest format: `5s`, `5m`, `5h`, `5d`.",
-            "nute_duration_limit": "Wybierz krótszy okres mute'a. Discord nie umożliwia muteów dłuższych niż 28 dni",
-            "user_not_have_mute": "W tym momencie użytkownik nie ma mute'a",
+            "nute_duration_limit": "Wybierz krótszy okres mute'a. Discord nie umożliwia muteów dłuższych niż 28 dni.",
+            "user_not_have_mute": "W tym momencie użytkownik nie ma mute'a.",
             "something_went_wrong": "Щось пішло не так. Спробуйте ще раз."
         },
         "commands": {}
@@ -49,7 +49,7 @@
     "commands": {
         "info": {
             "embed": {
-                "description": "Cześć, jestem Ganyu, sekretarka Liyue Qixing. Moim zadaniem jest pomaganie wędrowcom oswajać się z niezwykłym światem Teyvat\nUżywam slash commands, dlatego stałam się teraz jeszcze wygodniejszym w obsłudze botem. Jeśli chcesz poznać wszystkie moje komendy, możesz użyć </{command_help_name}:{command_help_id}>. Możesz też wykorzystać  </{command_journey_name}:{command_journey_id}>, by rozpocząć swoją podróż{emoji_ganyu_roll}"
+                "description": "Cześć, jestem Ganyu, sekretarka Liyue Qixing. Moim zadaniem jest pomaganie wędrowcom oswajać się z niezwykłym światem Teyvat\nUżywam slash commands, dlatego stałam się teraz jeszcze wygodniejszym w obsłudze botem. Jeśli chcesz poznać wszystkie moje komendy, możesz użyć </{command_help_name}:{command_help_id}>. Możesz też wykorzystać </{command_journey_name}:{command_journey_id}>, by rozpocząć swoją podróż{emoji_ganyu_roll}"
             },
             "fields": {
                 "name": {
@@ -81,7 +81,7 @@
                 },
                 "DM_member": {
                     "title": "Zostałeś zbanowany!",
-                    "description": "Otrzymałeś bana na serwerze: `{guild_name}`\nAdministrator,  który nałożył bana: {administrator_name}.\nPowód: ```{reason_ban}```"
+                    "description": "Otrzymałeś bana na serwerze: `{guild_name}`\nAdministrator, który nałożył bana: {administrator_name}.\nPowód: ```{reason_ban}```"
                 }
             },
             "ban_reason": {
