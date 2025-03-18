@@ -1,0 +1,49 @@
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+************* Module main
+main.py:43:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:49:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:51:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:54:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:75:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:80:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:81:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:84:0: C0301: Line too long (141/100) (line-too-long)
+main.py:86:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:90:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:104:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:110:0: C0303: Trailing whitespace (trailing-whitespace)
+main.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+main.py:7:0: W0401: Wildcard import ganyu_utils (wildcard-import)
+main.py:35:0: C0116: Missing function or method docstring (missing-function-docstring)
+main.py:42:8: W0621: Redefining name 'commands' from outer scope (line 6) (redefined-outer-name)
+main.py:57:11: W0718: Catching too general exception Exception (broad-exception-caught)
+main.py:39:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+main.py:61:0: C0116: Missing function or method docstring (missing-function-docstring)
+main.py:65:0: C0116: Missing function or method docstring (missing-function-docstring)
+main.py:69:0: C0116: Missing function or method docstring (missing-function-docstring)
+main.py:73:0: C0116: Missing function or method docstring (missing-function-docstring)
+main.py:84:66: C0209: Formatting a regular string which could be an f-string (consider-using-f-string)
+main.py:107:4: C0116: Missing function or method docstring (missing-function-docstring)
+main.py:4:0: C0411: standard import "os" should be placed before third party import "discord" (wrong-import-order)
+main.py:9:0: C0411: third party import "dotenv.load_dotenv" should be placed before first party imports "ganyu_utils.*", "ganyu_utils.Database"  (wrong-import-order)
+main.py:10:0: C0411: third party import "discord.app_commands" should be placed before first party imports "ganyu_utils.*", "ganyu_utils.Database"  (wrong-import-order)
+main.py:11:0: C0411: standard import "random.random" should be placed before third party imports "discord", "discord.ext.commands", "dotenv.load_dotenv", "discord.app_commands" and first party imports "ganyu_utils.*", "ganyu_utils.Database"  (wrong-import-order)
+main.py:12:0: C0411: standard import "typing.List" should be placed before third party imports "discord", "discord.ext.commands", "dotenv.load_dotenv", "discord.app_commands" and first party imports "ganyu_utils.*", "ganyu_utils.Database"  (wrong-import-order)
+main.py:10:0: C0412: Imports from package discord are not grouped (ungrouped-imports)
+main.py:10:0: W0611: Unused app_commands imported from discord (unused-import)
+main.py:7:0: W0614: Unused import(s) random, mysql, json_file, output, GuildLocaleGet, GetMsg, HexToColor, HexToRgb, RandomColor, ColorPrinter, get_str_locale, PagginationView, loads, dumps, Any, Union, List, Optional, Error, Guild, View, init, Fore, Back and Style from wildcard import of ganyu_utils (unused-wildcard-import)
+
+-------------------------------------------------------------------
+Your code has been rated at 5.22/10 (previous run: 10.00/10, -4.78)
+
+
+-------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 5.22/10, +4.78)
+
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
