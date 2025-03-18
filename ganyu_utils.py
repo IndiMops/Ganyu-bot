@@ -1,16 +1,17 @@
 """These are auxiliary functions to work bot"""
 import logging
+import os
 import random
-import mysql.connector
-import discord
-
 from json import loads, dumps
-from discord import Guild
-from typing import Any, Union
-from colorama import init, Fore, Back, Style
+
+from typing import Any, Union, List, Optional
+
+import mysql.connector
 from mysql.connector import Error
+import discord
+from discord import Guild
 from discord.ui import View
-from typing import List, Optional
+from colorama import init, Fore, Back, Style
 
 
 try:
@@ -51,47 +52,58 @@ def LoadJson(filename: str) -> Any:
         output = {}
     return output
 
-
 def GuildLocaleGet(guild: Guild) -> str:
-    """
-    Retrieves the locale setting for a specific guild.
-
-    Args:
-        guild (Guild): The guild for which the locale setting is to be retrieved.
-
-    Returns:
-        str: The locale code for the guild. If no specific locale is set, 
-             returns the default bot locale.
-
-    Notes:
-        - This function first tries to retrieve the locale from the guild's configuration.
-        - If the locale is not found or is empty, it defaults to the bot's locale specified in the `config.json` file.
-        - The `GuildConfGet` function is commented out but can be used to fetch the locale setting from guild-specific configuration.
-    """
     config = LoadJson("config.json")
     try:
-        locale = config["bot"]["locale"]
-        #locale = GuildConfGet(guild, "locale")
-    except KeyError:
-        return config["bot"]["locale"]
-    return locale or config["bot"]["locale"]
+        # Connect to the MySQL database
+        db = mysql.connector.connect(
+            host = os.getenv("MYSQL_HOST"),
+            user = os.getenv("MYSQL_USER"),
+            password = os.getenv("MYSQL_PASSWORD"),
+            database = os.getenv("MYSQL_DATABASE")
+        )
+        
+        # Create a cursor object to execute SQL queries
+        cursor = db.cursor()
+        
+        # Execute the SQL query to retrieve the locale for the guild
+        cursor.execute("SELECT locale FROM servers WHERE discord_id = %s", (guild.id,))
+        
+        # Fetch the result of the query
+        result = cursor.fetchone()
+        
+        # Close the cursor and database connection
+        cursor.close()
+        db.close()
+        
+        # If a locale is found in the database, return it
+        if result and result[0]:
+            return result[0]
+    except Exception as exp:
+        print(f"Could not get locale for guild {guild.id} due to exception {exp}")
+    
+    # If no locale is found in the database, return the default bot locale
+    return config["bot"]["locale"]
 
 
-def GetMsg(key: str, guild: Union[Guild, None] = None) -> str:
+def GetMsg(key: str, guild: Union[Guild, None] = None, country_code: Optional[str] = None) -> str:
     try:
         lang = LoadJson("config.json")
-    
-        locale = (
-            LoadJson(f'locale/{lang["bot"]["locale"]}.json')
-            if guild is None
-            else LoadJson(f'locale/{GuildLocaleGet(guild)}.json')
-        )
+        
+        if country_code:
+            locale = LoadJson(f'locale/{country_code}.json')
+        else:
+            locale = (
+                LoadJson(f'locale/{lang["bot"]["locale"]}.json')
+                if guild is None
+                else LoadJson(f'locale/{GuildLocaleGet(guild)}.json')
+            )
         keys = key.split('.')
         
         msg = locale
         for k in keys:
             msg = msg[k]
-
+        
         return msg
     except Exception as exp:
         print(f"Could not get locale string for key '{key}' due to exception {exp}")
@@ -255,6 +267,33 @@ def setup_logging():
     # logger.addHandler(console_handler)
 
     return logger
+
+
+def get_str_locale(interaction: discord.Interaction, locale: str) -> str:
+    """
+    Returns the localized string for the given locale.
+    Parameters:
+    - locale (str): The locale code.
+    Returns:
+    - str: The localized string for the given locale, or the default locale string if the given locale is not found.
+    """
+    config = LoadJson("config.json")
+    
+    locale_name = {
+        "be": f"{GetMsg("general.locale.be", country_code="be")}({GetMsg("general.locale.be", interaction.guild)})",
+        "de": f"{GetMsg("general.locale.de", country_code="de")}({GetMsg("general.locale.de", interaction.guild)})",
+        "en": f"{GetMsg("general.locale.en", country_code="en")}({GetMsg("general.locale.en", interaction.guild)})",
+        "es": f"{GetMsg("general.locale.es", country_code="es")}({GetMsg("general.locale.es", interaction.guild)})",
+        "fr": f"{GetMsg("general.locale.fr", country_code="fr")}({GetMsg("general.locale.fr", interaction.guild)})",
+        "it": f"{GetMsg("general.locale.it", country_code="it")}({GetMsg("general.locale.it", interaction.guild)})",
+        "ja": f"{GetMsg("general.locale.ja", country_code="ja")}({GetMsg("general.locale.ja", interaction.guild)})",
+        "ko": f"{GetMsg("general.locale.ko", country_code="ko")}({GetMsg("general.locale.ko", interaction.guild)})",
+        "pl": f"{GetMsg("general.locale.pl", country_code="pl")}({GetMsg("general.locale.pl", interaction.guild)})",
+        "pt": f"{GetMsg("general.locale.pt", country_code="pt")}({GetMsg("general.locale.pt", interaction.guild)})",
+        "uk": f"{GetMsg("general.locale.uk", country_code="uk")}({GetMsg("general.locale.uk", interaction.guild)})"
+    }
+        
+    return locale_name.get(locale, config["bot"]["locale"])
 
 class Database:
     def __init__(self, host, user, password, database):

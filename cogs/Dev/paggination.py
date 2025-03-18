@@ -17,7 +17,7 @@ class PagginationCommand(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         
-        
+         
     @app_commands.command(name="pagginatio", description="A command that demonstrates the use of pagination")
     async def paggination(self, interaction: discord.Interaction):
         if config["dev"]["id"] == str(interaction.user.id):
